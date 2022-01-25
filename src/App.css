@@ -1,38 +1,95 @@
-.App {
-  text-align: center;
+@import '~antd/dist/antd.css';
+body{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+:root{
+    --base-gap: 10px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.mainLayout{
+    display: flex;
+    flex-wrap: wrap;
+    flex: 0 0 250px;    
+    position: relative;
+}
+.topHeader,
+.sideBar,
+.mainBody{
+    width: 100%;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+header{
+    height: 60px;
+    position: fixed;
+    z-index: 1;
+    padding: 10px;
+    background-color: rgb(15, 44, 88);
+    box-shadow: 0px 5px 5px rgb(189, 188, 188);
+}
+.logo{
+    height: 40px;
+    width: 40px;
+    background-color: gray;
+}
+.menu{
+    height: 60px;
+    width: 60px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+.sideBar::before{
+    content: "";
+    display: block;
+    margin-top: 60px;
+}
+.sideBar{
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 0;
+    background-color: pink;
+    transition: 0.2s all;
+}
+.mainBody{
+    position: relative;
+    transition: 0.2s all;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.content{
+    margin-top: 60px;
+    padding: calc(var(--base-gap)*2);
+    background-color: rgb(223, 223, 222);
 }
 
-.App-link {
-  color: #61dafb;
+footer{
+    padding: calc(var(--base-gap)*2);
+    text-align: center;
+    background-color: greenyellow;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Medium */
+@media(min-width: 768px) {
+    .mainBody{
+        width: calc(100% - 250px);
+    }
+    .sideBar{
+        width: 250px;
+    }
+    .menu{
+        display: none;
+    }
+
+
+}
+
+/* Large */
+@media(min-width: 1400px) {
+    .mainBody{
+        max-width: 1600px;
+    }
 }
