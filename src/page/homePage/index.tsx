@@ -1,6 +1,5 @@
-import { Content, Footer } from "antd/lib/layout/layout";
-import React, { useState } from "react";
-import { CopyRight, Details, MainBody, Outline, SideBar, TopHeader } from "./layout";
+import React, { useEffect, useState } from "react";
+import { CopyRight, Details, MainBody, Outline, SideBar, TopHeader } from "./layouts";
 import { MenuOutlined, UserOutlined, VideoCameraOutlined, UploadOutlined } from '@ant-design/icons';
 import { Button, Menu } from "antd";
 
@@ -8,19 +7,33 @@ import { Button, Menu } from "antd";
 
 export default function HomePage(){
     const [ showMobileNav, setShowMobileNav ] = useState(false);
-    const handleMenuClick = () => {
-        console.log("hey!!!!!")
-        setShowMobileNav(!showMobileNav);
 
-    }
+    useEffect(()=> {
+        fetch("https://api.spotify.com/v1/audio-analysis/6EJiVf7U0p1BBfs0qqeb1f", {
+            method: "GET",
+            headers: {
+                // Authorization: `Bearer ${userAccessToken}`
+            }
+        })
+        .then(response => response.json())
+        .then(({beats}) => {
+            // beats.forEach((beat, index) => {
+            //     console.log(`Beat ${index} starts at ${beat.start}`);
+            // })
+        })
+    }, [])
+
 
 
     return(
         <Outline>
             <TopHeader>
                 <h1 className="logo">MM</h1>
-                <Button className="menu" type="primary" onClick={handleMenuClick}>
+                <Button className="menu" type="primary" onClick={() => setShowMobileNav(!showMobileNav)}>
                     <MenuOutlined />
+                </Button>
+                <Button className="logIn" type="primary" onClick={()=>{}}>
+                    Log In
                 </Button>
             </TopHeader>
             <SideBar showMobileNav={showMobileNav}> 

@@ -15,6 +15,8 @@ export const TopHeader = styled.header`
     padding: 10px;
     background-color: #313a46;
     box-shadow: 0px 3px 3px #313a4663;
+    display: flex;
+    justify-content: space-between;
 `;
 
 

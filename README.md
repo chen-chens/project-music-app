@@ -6,6 +6,7 @@
     - [React Router](https://reactrouter.com/docs/en/v6/api)
     - [Typescript](https://www.typescriptlang.org/docs/handbook/2/objects.html)
     - [styled-component](https://styled-components.com/)
+    - [Axios](https://github.com/axios/axios)
 - UI: [Antd Design](https://ant.design/components/overview/)
 - API:[Spotify API](https://developer.spotify.com/console/)
 
@@ -14,6 +15,10 @@
 
 
 - Demo：
+
+- 專案結構:
+
+
 
 
 

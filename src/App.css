@@ -19,9 +19,20 @@ body{
     font-size: 1.5rem;
     font-weight: 600;
 }
+.logIn{
+    height: 60px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    font-weight: 600;
+    display: none;
+}
 
 @media(min-width: 768px){
     .menu{
         display: none;
+    }
+    .logIn{
+        display: block;
     }
 }
