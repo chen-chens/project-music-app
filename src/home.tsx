@@ -19,7 +19,10 @@ export default function Home(){
           </Button>
         </header>
 
-        <aside className="sideBar">sideBar</aside>
+        <aside className="sideBar">
+          
+
+        </aside>
 
         <section className="mainBody">
           <main className="content">
@@ -27,7 +30,7 @@ export default function Home(){
           </main>
           <footer>Music App © 2022 By Chen Huei Jan</footer>
         </section>
-        
+
       </section>
     )
 }

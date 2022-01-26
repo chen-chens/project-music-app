@@ -4,23 +4,59 @@ import styled from "styled-components";
 export const Outline = styled.section`
     display: flex;
     flex-wrap: wrap;
-    flex: 0 0 200px;   
     position: relative;
-
 `;
 
 export const TopHeader = styled.header`
     width: 100%;
     height: 60px;
     position: fixed;
-    z-index: 1;
+    z-index: 2;
     padding: 10px;
     background-color: #313a46;
     box-shadow: 0px 3px 3px #313a4663;
 `;
 
+
+interface SideBarProps{
+    readonly showMobileNav: boolean;
+}
+export const SideBar = styled.aside<SideBarProps>`
+    position: fixed; 
+    z-index: 1;
+    top:0;
+    left: 0;
+    width: ${props => props.showMobileNav ? "100%" : 0}; 
+    height: ${props => props.showMobileNav ? "100vh" : "auto"}; 
+    background-color: #313a46;
+    transition: .2s all;
+
+    ::before{
+        content: "";
+        display: block;
+        margin-top: 60px;
+    }
+
+    .ant-menu.ant-menu-root.ant-menu-inline.ant-menu-dark{
+        display: ${props => props.showMobileNav ? "block" : "none"}; 
+        transition: .5s all;
+        height: auto;
+    }
+
+    /* Medium */
+    @media(min-width: 768px) {
+        position: relative; 
+        width: 200px;
+
+        .ant-menu.ant-menu-root.ant-menu-inline.ant-menu-dark{
+            display: block; 
+        }
+    }
+`;
+
+
 export const MainBody = styled.section`
-    width: 100%;
+    width: "100%"; 
     margin-top: 60px;
     position: relative;
     transition: 0.2s all;
@@ -33,28 +69,7 @@ export const MainBody = styled.section`
 
 `;
 
-export const SideBar = styled.aside`
-    position: relative;
-    top: 0;
-    left: 0;
-    width: 0;
-    background-color: #313a46;
-    transition: 0.2s all;
-
-    ::before{
-        content: "";
-        display: block;
-        margin-top: 60px;
-    }
-
-    /* Medium */
-    @media(min-width: 768px) {
-        width: 200px;
-    }
-`;
-
 export const Details = styled.main`
-    padding: "20px 15px";
     padding: 20px;
     min-height: calc(100vh - 120px);
 `;
