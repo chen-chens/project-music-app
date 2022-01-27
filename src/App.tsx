@@ -1,12 +1,15 @@
-import { Button, Typography } from 'antd';
-import React from 'react';
 import './App.css';
-import Home from './home';
-import HomePage from './page/homePage';
+import React from 'react';
+import { Route, Routes } from 'react-router';
+import { routes } from './routes';
 
 function App() {
   return (
-    <HomePage />
+    <Routes>
+      { routes.map(item => (
+        <Route key={item.path} path={item.path} element={item.component} />
+      ))}
+    </Routes>
   );
 }
 

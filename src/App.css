@@ -7,7 +7,7 @@ body{
 
 .logo{
     height: 40px;
-    width: 40px;
+    /* width: 40px; */
     background-color: gray;
 }
 .menu{
@@ -18,21 +18,23 @@ body{
     right: 0;
     font-size: 1.5rem;
     font-weight: 600;
+    border-radius: 0;
 }
-.logIn{
+.logBtn{
     height: 60px;
+    width: 80px;
     position: fixed;
     top: 0;
     right: 0;
-    font-weight: 600;
     display: none;
+    border-radius: 0;
 }
 
 @media(min-width: 768px){
     .menu{
         display: none;
     }
-    .logIn{
+    .logBtn{
         display: block;
     }
 }

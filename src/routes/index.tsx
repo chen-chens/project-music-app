@@ -1,19 +1,20 @@
 import React from "react";
-import HomePage from "../page/homePage";
+import Home from "../page/home";
+import LogIn from "../page/logIn";
 
 
 
 export const routes = [
     {
         path: "/",
-        // component: <LogInPage />,
+        component: <LogIn />,
     },
     {
         path: "/logIn",
-        // component: <LogInPage />,
+        component: <LogIn />,
     },
     {
         path: "/home",
-        component: <HomePage />,
+        component: <Home />,
     },
 ];

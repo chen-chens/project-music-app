@@ -1,51 +1,54 @@
 import React, { useEffect, useState } from "react";
 import { CopyRight, Details, MainBody, Outline, SideBar, TopHeader } from "./layouts";
-import { MenuOutlined, UserOutlined, VideoCameraOutlined, UploadOutlined } from '@ant-design/icons';
+import { MenuOutlined, UserOutlined, LikeOutlined, FolderAddOutlined } from '@ant-design/icons';
 import { Button, Menu } from "antd";
+import { useNavigate } from "react-router";
 
 
 
-export default function HomePage(){
+export default function Home(){
+    const iconStyle = {fontSize: "18px", fontWeight: 600 };
+    const navigate = useNavigate();
     const [ showMobileNav, setShowMobileNav ] = useState(false);
 
-    useEffect(()=> {
-        fetch("https://api.spotify.com/v1/audio-analysis/6EJiVf7U0p1BBfs0qqeb1f", {
-            method: "GET",
-            headers: {
-                // Authorization: `Bearer ${userAccessToken}`
-            }
-        })
-        .then(response => response.json())
-        .then(({beats}) => {
-            // beats.forEach((beat, index) => {
-            //     console.log(`Beat ${index} starts at ${beat.start}`);
-            // })
-        })
-    }, [])
+    // useEffect(()=> {
+    //     fetch("https://api.spotify.com/v1/audio-analysis/6EJiVf7U0p1BBfs0qqeb1f", {
+    //         method: "GET",
+    //         headers: {
+    //             Authorization: `Bearer ${userAccessToken}`
+    //         }
+    //     })
+    //     .then(response => response.json())
+    //     .then(({beats}) => {
+    //         beats.forEach((beat, index) => {
+    //             console.log(`Beat ${index} starts at ${beat.start}`);
+    //         })
+    //     })
+    // }, [])
 
 
 
     return(
         <Outline>
             <TopHeader>
-                <h1 className="logo">MM</h1>
+                <h1 className="logo">MUSIC</h1>
                 <Button className="menu" type="primary" onClick={() => setShowMobileNav(!showMobileNav)}>
                     <MenuOutlined />
                 </Button>
-                <Button className="logIn" type="primary" onClick={()=>{}}>
-                    Log In
+                <Button className="logBtn" type="primary" onClick={()=> navigate("/")}>
+                    登出
                 </Button>
             </TopHeader>
             <SideBar showMobileNav={showMobileNav}> 
                 <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-                    <Menu.Item key="1" icon={<UserOutlined />}>
-                    nav 1
+                    <Menu.Item key="1" icon={<UserOutlined style={iconStyle}/>}>
+                        我的播放清單
                     </Menu.Item>
-                    <Menu.Item key="2" icon={<VideoCameraOutlined />}>
-                    nav 2
+                    <Menu.Item key="2" icon={<LikeOutlined style={iconStyle}/>}>
+                        已按讚歌曲
                     </Menu.Item>
-                    <Menu.Item key="3" icon={<UploadOutlined />}>
-                    nav 3
+                    <Menu.Item key="3" icon={<FolderAddOutlined style={iconStyle}/>}>
+                        建立播放清單
                     </Menu.Item>
                 </Menu>
             </SideBar>
