@@ -1,53 +1,52 @@
 import {Form,Input,Button} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import AlertNotification from '../../components/alertNotifacation';
-import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () =>{
-    const navigate = useNavigate();
     const config = [{ required: true, message: '必填欄位' }];
-           // form 資料驗證成功
-           const onFinish = (values: {username: string, password: string}) => {
-            console.log("🚀 ~ log in valid", values);
-            navigate("./home");
+
+    function generateRandomString(length: number) {
+        var text = '';
+        var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+        for (var i = 0; i < length; i++) {
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+        }
+        return text;
+    };
+
+
+    // form 資料驗證成功
+    const onFinish = (values: {username: string, password: string}) => {
+        const client_id = 'd2a09310d88449df94972cd08f3a96ec'; // Your client id
+        const redirect_uri = 'http://localhost:3001/home'; // Your redirect uri
+
+        const stateKey = 'spotify_auth_state';
+        const state = generateRandomString(16);
+
+        localStorage.setItem(stateKey, state); 
+        const scope = 'user-read-private user-read-email';
+
+        let url = 'https://accounts.spotify.com/authorize'
+                + '?response_type=token';
+                + '&client_id=' + encodeURIComponent(client_id);
+                + '&scope=' + encodeURIComponent(scope);
+                + '&redirect_uri=' + encodeURIComponent(redirect_uri);
+                + '&state=' + encodeURIComponent(state);
+
+        window.location.href = url; // status code: 302 (重新導向，要求的資源暫時存於不同的 URI 底下，用戶端瀏覽器必須採取更多動作才能完成要求。)
+        
+    };
      
-             const request = {
-                 userName: values.username,
-                 password: values.password,
-             };
-     
-             // call login request
-             // ApiLogin(request)
-             // .then(res => {
-                 
-             //     dispatch(currentUserActions.updateUserToken(res.data.token));
-             //     getCurrentUserData(res.data.token);
-     
-             //     //增加延遲，使login modal不要跳出
-             //     // setTimeout(() =>history.push('/master/index'),100)
-     
-             // })
-             // .catch(err => {
-             //     console.log("loginPage err:", err);
-     
-             //     AlertNotification({
-             //         type :"error", 
-             //         title: "登入失敗", 
-             //         description: "請重新確認！"
-             //     });
-             // });
-             
-         };
-     
-         // form 資料驗證失敗
-         const onFinishFailed = (errorInfo: any) => {
-             console.log("帳號密碼沒填", errorInfo);
-             
-             AlertNotification({
-                 type :"error",
-                 title: "帳號密碼為必填項目"
-             });
-         };
+    // form 資料驗證失敗
+    const onFinishFailed = (errorInfo: any) => {
+        console.log("帳號密碼沒填", errorInfo);
+        
+        AlertNotification({
+            type :"error",
+            title: "帳號密碼為必填項目"
+        });
+    };
     
     return(
         <Form         
