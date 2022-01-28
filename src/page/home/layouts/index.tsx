@@ -1,3 +1,6 @@
+import { Button, Typography } from "antd";
+import { MenuOutlined } from '@ant-design/icons';
+import React from "react";
 import styled from "styled-components";
 
 
@@ -59,6 +62,8 @@ export const SideBar = styled.aside<SideBarProps>`
 
 export const MainBody = styled.section`
     width: "100%"; 
+    min-height: calc(100vh - 120px);
+    padding: 20px 20px 0 20px;
     margin-top: 60px;
     position: relative;
     transition: 0.2s all;
@@ -71,14 +76,17 @@ export const MainBody = styled.section`
 
 `;
 
-export const Details = styled.main`
-    padding: 20px;
+export const DetailList = styled.main`
     min-height: calc(100vh - 120px);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
 `;
 
+
 export const CopyRight = styled.footer`
-    height: 60px;
-    padding: 20px;
+    margin-top: 15px;
+    line-height: 80px;
     text-align: center;
     border-top: 1px solid #98a6ad33;
     color: #98a6ad;

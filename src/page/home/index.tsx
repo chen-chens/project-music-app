@@ -1,48 +1,88 @@
 import React, { useEffect, useState } from "react";
-import { CopyRight, Details, MainBody, Outline, SideBar, TopHeader } from "./layouts";
-import { MenuOutlined, UserOutlined, LikeOutlined, FolderAddOutlined } from '@ant-design/icons';
-import { Button, Menu } from "antd";
+import { CopyRight, MainBody, Outline, TopHeader } from "./layouts";
+import { MenuOutlined } from '@ant-design/icons';
+import { Button, Card, Spin, Tabs, Typography } from "antd";
 import { useLocation, useNavigate } from "react-router";
-import axios from "axios";
-import { spotifyRequest } from "../../service/url";
 import qs from "qs";
 import { useDispatch } from "react-redux";
-import { useAppSelector } from "../../reduxToolkit/hooks";
-import { currentUserActions, currentUserData } from "../../reduxToolkit";
+import { currentUserActions } from "../../reduxToolkit";
+import { spotifyApi } from "../../service/url";
+import Meta from "antd/lib/card/Meta";
+import NavBar from "./components/navBar";
+import Details from "./components/details";
+import AlertNotification from "../../components/alertNotifacation";
 
+enum Genrees {
+    NEW_RELEASE = "new-release", // 最新發行
+    K_POP = "k-pop",
+    HIP_HOP = "hip-hop", 
+    ROCK = "rock",
+    STUDY = "study", // 專注
+    WORK_OUT = "work-out", // 健身
+}
 
 export default function Home(){
-    const iconStyle = {fontSize: "18px", fontWeight: 600 };
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation(); // To get url
     const urlParams = qs.parse(location.hash.slice(1), { ignoreQueryPrefix: true }); // pase url params to get token
     const [ showMobileNav, setShowMobileNav ] = useState(false);
+    const [ recommendationList, setRecommendationList ] = useState<globalThis.SpotifyApi.RecommendationsFromSeedsResponse>();
+    const [ genresKey, setGenresKey ] = useState<string>(Genrees.NEW_RELEASE);
+    const [ loading, setLoading ] = useState(false);
 
     useEffect(()=> {
-        console.log("urlParams: ", urlParams);
         if(urlParams.access_token){
-            dispatch(currentUserActions.getToken(urlParams.access_token.toString()));
+            setLoading(true);
+            dispatch(currentUserActions.getToken(urlParams.access_token.toString())); // update token to redux
+
+            spotifyApi().setAccessToken(urlParams.access_token.toString());
+            spotifyApi().getRecommendations({ seed_genres: genresKey })
+            .then(res => {
+                console.log("res: ",res);
+                setRecommendationList(res);
+            }).catch(err => {
+                console.log("err: ",err);
+                AlertNotification({
+                    type: "error",
+                    title: "取得資料失敗！"
+                })
+            }).finally(() => setLoading(false))
         }
+    }, [urlParams.access_token, genresKey])
 
 
-        // spotifyRequest.get(`/v1/tracks/6rqhFgbbKwnb9MLmUQDhG6`, {
-        //     headers:{"Authorization": `Bearer ${urlParams.access_token}`} 
-        // }).then(res => {
-        //     console.log("res: ",res);
-        // }).catch(err => {
-        //     console.log("err: ",err);
-        // })
-
-       
-    }, [urlParams])
-
-
+    const categoryTags = [
+        {
+            key: Genrees.NEW_RELEASE,
+            title: "最新發行",
+        },
+        {
+            key: Genrees.K_POP,
+            title: "韓國流行樂",
+        },
+        {
+            key: Genrees.HIP_HOP,
+            title: "Hip Hop",
+        },
+        {
+            key: Genrees.ROCK,
+            title: "搖滾樂",
+        },
+        {
+            key: Genrees.STUDY,
+            title: "專注",
+        },
+        {
+            key: Genrees.WORK_OUT,
+            title: "健身",
+        },
+    ];
 
     return(
         <Outline>
             <TopHeader>
-                <h1 className="logo">MUSIC</h1>
+                <Typography.Title level={2} className="logo">MUSIC</Typography.Title>
                 <Button className="menu" type="primary" onClick={() => setShowMobileNav(!showMobileNav)}>
                     <MenuOutlined />
                 </Button>
@@ -50,28 +90,18 @@ export default function Home(){
                     登出
                 </Button>
             </TopHeader>
-            <SideBar showMobileNav={showMobileNav}> 
-                <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-                    <Menu.Item key="1" icon={<UserOutlined style={iconStyle}/>}>
-                        我的播放清單
-                    </Menu.Item>
-                    <Menu.Item key="2" icon={<LikeOutlined style={iconStyle}/>}>
-                        已按讚歌曲
-                    </Menu.Item>
-                    <Menu.Item key="3" icon={<FolderAddOutlined style={iconStyle}/>}>
-                        建立播放清單
-                    </Menu.Item>
-                </Menu>
-            </SideBar>
-
+            <NavBar showMobileNav={showMobileNav}/>
             <MainBody>
-                <Details>
-                    今天想聽什麼歌？
-                    搜尋鈕
-                    (1) 熱門精選
-                    (2) 最新發行
-                    (3) 各種分類
-                </Details>
+                <Typography.Title level={3}>今天想聽什麼歌？</Typography.Title>
+                <Tabs defaultActiveKey="1" onChange={(key: string)=> setGenresKey(key)}>
+                    {categoryTags.map(tag => (
+                        <Tabs.TabPane tab={tag.title} key={tag.key}>
+                            <Spin spinning={loading}>
+                                <Details data={recommendationList}/>    
+                            </Spin>
+                        </Tabs.TabPane>
+                    ))}
+                </Tabs>
                 <CopyRight>Music App © 2022 By Chen Huei Jan</CopyRight>
             </MainBody>
         </Outline>

@@ -1,5 +1,8 @@
 import axios from 'axios'
+import { useSelector } from 'react-redux';
 import SpotifyWebApi from 'spotify-web-api-js';
+import { currentUserData } from '../reduxToolkit';
+import { useAppSelector } from '../reduxToolkit/hooks';
 
 export const spotifyRequest = axios.create({
     baseURL: 'https://api.spotify.com',
@@ -10,6 +13,9 @@ export const spotifyRequest = axios.create({
     }
 });
 
-const spotifyWebApi = new SpotifyWebApi();
-// spotifyWebApi.setAccessToken();
 
+export function spotifyApi(){
+    const spotifyWebApi = new SpotifyWebApi();
+
+    return spotifyWebApi;
+}

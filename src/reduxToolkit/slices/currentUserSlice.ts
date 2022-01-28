@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { useSelector } from "react-redux";
 import { RootState } from "../store";
 
 interface CurrentUserType {
@@ -35,3 +36,5 @@ export const currentUserSlice = createSlice({
         }
     }
 });
+
+export const slecterToken = (state: RootState) => state.currentUser.token;

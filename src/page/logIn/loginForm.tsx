@@ -27,12 +27,12 @@ const LoginForm = () =>{
         localStorage.setItem(stateKey, state); 
         const scope = 'user-read-private user-read-email';
 
-        let url = 'https://accounts.spotify.com/authorize'
-                + '?response_type=token';
-                + '&client_id=' + encodeURIComponent(client_id);
-                + '&scope=' + encodeURIComponent(scope);
-                + '&redirect_uri=' + encodeURIComponent(redirect_uri);
-                + '&state=' + encodeURIComponent(state);
+        let url = 'https://accounts.spotify.com/authorize';
+        url += '?response_type=token';
+        url += '&client_id=' + encodeURIComponent(client_id);
+        url += '&scope=' + encodeURIComponent(scope);
+        url += '&redirect_uri=' + encodeURIComponent(redirect_uri);
+        url += '&state=' + encodeURIComponent(state);
 
         window.location.href = url; // status code: 302 (重新導向，要求的資源暫時存於不同的 URI 底下，用戶端瀏覽器必須採取更多動作才能完成要求。)
         

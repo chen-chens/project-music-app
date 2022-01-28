@@ -1,9 +1,9 @@
-import { currentUserSlice } from './slices/currentUserSlice';
+import { currentUserSlice, slecterToken } from './slices/currentUserSlice';
 import { RootState } from './store';
 
 // get value by selector function: RootState -> slice name -> state -> target key
 export const currentUserData = {
-    userData: (state: RootState) => state.currentUser.userData,
+    userData: slecterToken,
     token: (state: RootState) => state.currentUser.token,
     expired: (state: RootState) => state.currentUser.expired,
 }
