@@ -1,6 +1,3 @@
-import { Button, Typography } from "antd";
-import { MenuOutlined } from '@ant-design/icons';
-import React from "react";
 import styled from "styled-components";
 
 

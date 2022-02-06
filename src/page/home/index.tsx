@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { CopyRight, MainBody, Outline, TopHeader } from "./layouts";
 import { MenuOutlined } from '@ant-design/icons';
-import { Button, Card, Spin, Tabs, Typography } from "antd";
+import { Button, Spin, Tabs, Typography } from "antd";
 import { useLocation, useNavigate } from "react-router";
 import qs from "qs";
 import { useDispatch } from "react-redux";
 import { currentUserActions } from "../../reduxToolkit";
 import { spotifyApi } from "../../service/url";
-import Meta from "antd/lib/card/Meta";
 import NavBar from "./components/navBar";
 import Details from "./components/details";
 import AlertNotification from "../../components/alertNotifacation";
@@ -97,7 +96,7 @@ export default function Home(){
                     {categoryTags.map(tag => (
                         <Tabs.TabPane tab={tag.title} key={tag.key}>
                             <Spin spinning={loading}>
-                                <Details data={recommendationList}/>    
+                                <Details data={recommendationList} genresKey={genresKey}/>    
                             </Spin>
                         </Tabs.TabPane>
                     ))}

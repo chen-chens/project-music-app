@@ -19,7 +19,7 @@ const LoginForm = () =>{
     // form 資料驗證成功
     const onFinish = (values: {username: string, password: string}) => {
         const client_id = 'd2a09310d88449df94972cd08f3a96ec'; // Your client id
-        const redirect_uri = 'http://localhost:3001/home'; // Your redirect uri
+        const redirect_uri = 'http://localhost:3000/master'; // Your redirect uri
 
         const stateKey = 'spotify_auth_state';
         const state = generateRandomString(16);
