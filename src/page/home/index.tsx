@@ -10,6 +10,7 @@ import { spotifyApi } from "../../service/url";
 import NavBar from "./components/navBar";
 import Details from "./components/details";
 import AlertNotification from "../../components/alertNotifacation";
+import PlayBar from "../../components/playBar";
 
 enum Genrees {
     NEW_RELEASE = "new-release", // 最新發行
@@ -103,6 +104,7 @@ export default function Home(){
                 </Tabs>
                 <CopyRight>Music App © 2022 By Chen Huei Jan</CopyRight>
             </MainBody>
+            <PlayBar />
         </Outline>
     )
 }
