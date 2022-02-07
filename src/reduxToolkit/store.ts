@@ -5,9 +5,7 @@ import {currentUserSlice} from './slices/currentUserSlice';
 export const store = configureStore({
     reducer:{
         currentUser: currentUserSlice.reducer,
-
     }
-    
 })
 
 

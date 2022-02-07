@@ -1,13 +1,6 @@
 import styled from "styled-components";
-import { 
-    PauseCircleFilled, 
-    PlayCircleFilled, 
-    StepForwardFilled, 
-    StepBackwardFilled,
-    SoundOutlined
-} from '@ant-design/icons';
-import { ReactNode } from "react";
-import { Slider } from "antd";
+import { useEffect, useState } from "react";
+import AlertNotification from "./alertNotifacation";
 
 
 export const PlayTool = styled.section`
@@ -21,52 +14,56 @@ export const PlayTool = styled.section`
     z-index: 5;
     display: flex;
     align-items: center;
-    
-    .playItem{
-        width: 33.333333%;
-        height: 60px;
-        text-align: center;
-    }
-    .playItem:first-child,
-    .playItem:last-child{
-        display: flex;
-        align-items: center;
-        justify-content: start;
-    }
-    .playItem:last-child{
-        justify-content: end;
-
-    }
+    justify-content: space-between;
 `;
 
+interface CurrentInfoType{
+    id: string;
+    imgSrc: string;
+    singer: string;
+    song: string;
+}
 
-export default function PlayBar(){
+interface PlayBarProps{
+    targetItem?: SpotifyApi.TrackObjectFull;
+}
+
+export default function PlayBar(props: PlayBarProps){
     const style = {fontSize: 30, color: "#fff", margin: "0 10px", cursor: "pointer", verticalAlign: "middle"};
+    const [ previewMp3Url, setPreviewMp3Url ] = useState("");
+    const [ currentInfo, setCurrentInfo ] = useState<CurrentInfoType>({id: "", imgSrc: "", singer: "", song: ""});
 
-    function formatter(value: ReactNode|null) {
-        return `${value}%`;
-      }
+    useEffect(()=> {
+        if(props.targetItem?.preview_url){
+            setPreviewMp3Url(props.targetItem.preview_url);
+            setCurrentInfo({
+                id: props.targetItem.id,
+                imgSrc: props.targetItem.album.images[2].url,
+                singer: props.targetItem.artists[0].name,
+                song: props.targetItem.name,
+            })
+        }else{
+            AlertNotification({
+                type: "warning",
+                title: "沒有參考音源！"
+            })
+        }
+    }, [props.targetItem])
 
     return(
-        <>
-            <PlayTool>
-                <div className="playItem">
-                    現正播放：
+        <PlayTool>
+            <section className="currentPlaying">
+                <div className="thumbnail">
+                    <img src={currentInfo.imgSrc} alt={currentInfo.song}/>
                 </div>
-                <div className="playItem">
-                    <StepBackwardFilled style={style}/>
-                    <PlayCircleFilled style={style}/>
-                    <PauseCircleFilled style={style}/>
-                    <StepForwardFilled style={style}/>
-                    <Slider min={0} max={100} defaultValue={50} style={{width: "100%", verticalAlign: "top"}}/>
+                <div className="txt">
+                    <h2 className="mainTitle">{currentInfo.song}</h2>
+                    <h3 className="description">{currentInfo.singer}</h3>
+                </div>
+            </section>
+            <audio src={previewMp3Url} controls autoPlay></audio>
 
-                </div>
-                <div className="playItem">
-                    <SoundOutlined style={{...style, fontSize: 25}}/>
-                    <Slider tipFormatter={formatter} min={0} max={100} defaultValue={50} style={{width: 150, verticalAlign: "top", display: "inline-block"}}/>
-                </div>
-            </PlayTool>
-        </>
+        </PlayTool>
     )
 }
 

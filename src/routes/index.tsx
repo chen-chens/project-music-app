@@ -1,24 +1,41 @@
 import React from "react";
+import BuildMyPlayList from "../page/buildMyPlayList";
 import Home from "../page/home";
+import Recommendation from "../page/home/components/recommendation";
 import LogIn from "../page/logIn";
+import MyPlayLists from "../page/myPlayLists";
+import { RoutesType } from "../type/routesType";
 
 
-
-export const routes = [
+export const routes: RoutesType[] = [
     {
         path: "/",
-        component: <LogIn />,
+        element: <LogIn />,
     },
     {
         path: "logIn",
-        component: <LogIn />,
+        element: <LogIn />,
     },
     {
-        path: "master",
-        component: <Home />,
-    },
-    {
-        path: "master/playList",
-        component: <Home />,
+        path: "master/*",
+        element: <Home />,
+        children: [
+            {
+                path: "",
+                element: <Recommendation />,
+            },
+            {
+                path: "buildMyPlayList",
+                element: <BuildMyPlayList />,
+            },
+            {
+                path: "myPlayLists",
+                element: <MyPlayLists />,
+            },
+            {
+                path: "buildMyPlayList",
+                element: <BuildMyPlayList />,
+            },
+        ]
     },
 ];

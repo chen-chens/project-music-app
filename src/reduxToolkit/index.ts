@@ -11,5 +11,5 @@ export const currentUserData = {
 // action: { type: reducers屬性名, payload: state }
 export const currentUserActions = {
     ...currentUserSlice.actions,
-
 }
+

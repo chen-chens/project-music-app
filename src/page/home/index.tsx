@@ -1,25 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { CopyRight, MainBody, Outline, TopHeader } from "./layouts";
+import { CopyRight, MainBody, Layout, TopHeader } from "./layouts";
 import { MenuOutlined } from '@ant-design/icons';
-import { Button, Spin, Tabs, Typography } from "antd";
-import { useLocation, useNavigate } from "react-router";
+import { Button, Typography } from "antd";
+import { Outlet, useLocation, useNavigate } from "react-router";
 import qs from "qs";
 import { useDispatch } from "react-redux";
 import { currentUserActions } from "../../reduxToolkit";
-import { spotifyApi } from "../../service/url";
 import NavBar from "./components/navBar";
-import Details from "./components/details";
-import AlertNotification from "../../components/alertNotifacation";
-import PlayBar from "../../components/playBar";
 
-enum Genrees {
-    NEW_RELEASE = "new-release", // 最新發行
-    K_POP = "k-pop",
-    HIP_HOP = "hip-hop", 
-    ROCK = "rock",
-    STUDY = "study", // 專注
-    WORK_OUT = "work-out", // 健身
-}
 
 export default function Home(){
     const dispatch = useDispatch();
@@ -27,62 +15,18 @@ export default function Home(){
     const location = useLocation(); // To get url
     const urlParams = qs.parse(location.hash.slice(1), { ignoreQueryPrefix: true }); // pase url params to get token
     const [ showMobileNav, setShowMobileNav ] = useState(false);
-    const [ recommendationList, setRecommendationList ] = useState<globalThis.SpotifyApi.RecommendationsFromSeedsResponse>();
-    const [ genresKey, setGenresKey ] = useState<string>(Genrees.NEW_RELEASE);
-    const [ loading, setLoading ] = useState(false);
 
     useEffect(()=> {
         if(urlParams.access_token){
-            setLoading(true);
             dispatch(currentUserActions.getToken(urlParams.access_token.toString())); // update token to redux
-
-            spotifyApi().setAccessToken(urlParams.access_token.toString());
-            spotifyApi().getRecommendations({ seed_genres: genresKey })
-            .then(res => {
-                console.log("res: ",res);
-                setRecommendationList(res);
-            }).catch(err => {
-                console.log("err: ",err);
-                AlertNotification({
-                    type: "error",
-                    title: "取得資料失敗！"
-                })
-            }).finally(() => setLoading(false))
+            navigate("/master");
         }
-    }, [urlParams.access_token, genresKey])
-
-
-    const categoryTags = [
-        {
-            key: Genrees.NEW_RELEASE,
-            title: "最新發行",
-        },
-        {
-            key: Genrees.K_POP,
-            title: "韓國流行樂",
-        },
-        {
-            key: Genrees.HIP_HOP,
-            title: "Hip Hop",
-        },
-        {
-            key: Genrees.ROCK,
-            title: "搖滾樂",
-        },
-        {
-            key: Genrees.STUDY,
-            title: "專注",
-        },
-        {
-            key: Genrees.WORK_OUT,
-            title: "健身",
-        },
-    ];
+    }, [urlParams.access_token])
 
     return(
-        <Outline>
+        <Layout>
             <TopHeader>
-                <Typography.Title level={2} className="logo">MUSIC</Typography.Title>
+                <Typography.Title level={2} className="logo" onClick={() => navigate("/master")}>MUSIC</Typography.Title>
                 <Button className="menu" type="primary" onClick={() => setShowMobileNav(!showMobileNav)}>
                     <MenuOutlined />
                 </Button>
@@ -90,21 +34,15 @@ export default function Home(){
                     登出
                 </Button>
             </TopHeader>
+
             <NavBar showMobileNav={showMobileNav}/>
+
             <MainBody>
-                <Typography.Title level={3}>今天想聽什麼歌？</Typography.Title>
-                <Tabs defaultActiveKey="1" onChange={(key: string)=> setGenresKey(key)}>
-                    {categoryTags.map(tag => (
-                        <Tabs.TabPane tab={tag.title} key={tag.key}>
-                            <Spin spinning={loading}>
-                                <Details data={recommendationList} genresKey={genresKey}/>    
-                            </Spin>
-                        </Tabs.TabPane>
-                    ))}
-                </Tabs>
+                <Outlet /> 
                 <CopyRight>Music App © 2022 By Chen Huei Jan</CopyRight>
             </MainBody>
-            <PlayBar />
-        </Outline>
+
+            {/* <PlayBar targetItem={targetItem}/> */}
+        </Layout>
     )
 }

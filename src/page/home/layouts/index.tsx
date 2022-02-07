@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 
-export const Outline = styled.section`
+export const Layout = styled.section`
     display: flex;
     flex-wrap: wrap;
     position: relative;
@@ -58,8 +58,8 @@ export const SideBar = styled.aside<SideBarProps>`
 
 
 export const MainBody = styled.section`
-    width: "100%"; 
-    min-height: calc(100vh - 120px);
+    width: 100%; 
+    min-height: calc(100vh - 60px);
     padding: 20px 20px 0 20px;
     margin-top: 60px;
     position: relative;
