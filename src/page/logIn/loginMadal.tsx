@@ -1,6 +1,5 @@
 import { Modal } from "antd";
 import React from "react";
-import AlertNotification from '../../components/alertNotifacation';
 import LoginForm from "./loginForm";
 
 export default function LoginModal(){

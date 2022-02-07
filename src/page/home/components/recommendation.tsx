@@ -1,11 +1,12 @@
-import { Spin, Tabs, Typography } from "antd";
+import { Card, Spin, Tabs, Typography } from "antd";
+import Meta from "antd/lib/card/Meta";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import AlertNotification from "../../../components/alertNotifacation";
 import { currentUserData } from "../../../reduxToolkit";
 import { spotifyApi } from "../../../service/url";
 import { Genrees } from "../../../type/genrees";
-import Details from "./details";
+import { DetailList } from "../layouts";
 
 
 export default function Recommendation(){
@@ -67,7 +68,19 @@ export default function Recommendation(){
                 {categoryTags.map(tag => (
                     <Tabs.TabPane tab={tag.title} key={tag.key}>
                         <Spin spinning={loading}>
-                            <Details data={recommendationList} genresKey={genresKey} setTargetItem={setTargetItem}/>    
+                            <DetailList>
+                                {recommendationList?.tracks.map(item => (
+                                    <Card
+                                        key={item.id}
+                                        hoverable
+                                        style={{ width: 240, margin: 15 }}
+                                        cover={<img alt={item.name} src={item.album.images[0].url} />}
+                                        onClick={()=>  setTargetItem(item)}
+                                    >
+                                        <Meta title={item.name} description={item.artists[0].name} />
+                                    </Card>
+                                ))}
+                            </DetailList>
                         </Spin>
                     </Tabs.TabPane>
                 ))}

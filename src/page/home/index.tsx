@@ -19,7 +19,7 @@ export default function Home(){
     useEffect(()=> {
         if(urlParams.access_token){
             dispatch(currentUserActions.getToken(urlParams.access_token.toString())); // update token to redux
-            navigate("/master");
+            // navigate("/master");
         }
     }, [urlParams.access_token])
 
