@@ -74,10 +74,9 @@ export const MainBody = styled.section`
 `;
 
 export const DetailList = styled.main`
-    min-height: calc(100vh - 120px);
     display: flex;
     flex-wrap: wrap;
-    align-items: stretch;
+    /* align-items: stretch; */
 `;
 
 

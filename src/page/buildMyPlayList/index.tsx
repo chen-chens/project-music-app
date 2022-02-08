@@ -1,11 +1,14 @@
-import { Avatar, Button, Divider, Input, List, Table } from "antd";
-import React, { ReactNode, useState } from "react";
+import { Avatar, Input, List, Table, Typography } from "antd";
+import { PlayCircleFilled } from '@ant-design/icons';
+import React, { useState } from "react";
 import VirtualList from 'rc-virtual-list';
-import BasicLayout from "../../common/basicLayout";
+import BasicLayout from "../../common/layouts/basicLayout";
 import { spotifyApi } from "../../service/url";
 import { useSelector } from "react-redux";
 import { currentUserData } from "../../reduxToolkit";
-import AlertNotification from "../../components/alertNotifacation";
+import AlertNotification from "../../common/components/alertNotifacation";
+import { AddButton, DeleteButton } from "../../common/components/buttons";
+import { ColumnsType } from "antd/lib/table";
 
 export default function BuildMyPlayList(){
     const ContainerHeight = 400;
@@ -13,27 +16,44 @@ export default function BuildMyPlayList(){
     const [ loading, setLoading ] = useState(false);
     const [ searchValue, setSearchValue ] = useState("");
     const [ searchResults, setSearchResults ] = useState<SpotifyApi.TrackObjectFull[]>([]);
-    // const [ apiCall, setApiCall ] = useState<Promise<SpotifyApi.SearchResponse>|null>(null);
+    const [ userPlayList, setUserPlayList ] = useState<SpotifyApi.TrackObjectFull[]>([]);
 
-    const columns = [
+
+    const columns: ColumnsType<SpotifyApi.TrackObjectFull> = [
         {
-            title: '#',
-            dataIndex: 'name',
+            title: '',
+            width: 60,
+            onCell: () => ({style: {textAlign: "center"}}),
+            render: (row: SpotifyApi.TrackObjectFull) => ( 
+                <PlayCircleFilled style={{fontSize: 25}} onClick={()=> {}}/>
+            )
         },
         {
-            title: '標題',
-            dataIndex: 'name',
+            title: '歌名',
+            render: (row: SpotifyApi.TrackObjectFull) => ( 
+                <List.Item.Meta
+                    avatar={<Avatar src={row.album.images[1].url} />}
+                    title={row.name}
+                    description={getArtistNames(row.artists)}
+                /> 
+            )
         },
         {
             title: '專輯',
-            dataIndex: 'name',
+            dataIndex: ['album', 'name'],
         },
         {
-            title: '移除鈕',
-            dataIndex: 'name',
+            title: '發行日期',
+            dataIndex: ['album', 'release_date'],
+        },
+        {
+            title: '',
+            width: 100,
+            render: (row: SpotifyApi.TrackObjectFull) => (
+                <DeleteButton onClick={()=> {}}/>
+            )
         },
     ];
-    
 
     const onSearch = (value: string) => {
         console.log(value);
@@ -65,8 +85,6 @@ export default function BuildMyPlayList(){
         }
     };
 
-    
-
     const getArtistNames = (artistsData: SpotifyApi.ArtistObjectSimplified[]): string => {
         const artistNames = artistsData.map(item => item.name);
         return artistNames.join();
@@ -74,16 +92,14 @@ export default function BuildMyPlayList(){
 
     return(
         <BasicLayout
-            title="建立我的專屬請單＃1"
+            title="建立我的專屬清單＃1"
             main={
                 <Table 
                     size="small" 
                     loading={loading}
-                    // bordered
                     rowKey="id"
                     columns={columns}
-                    dataSource={[]}
-                    // dataSource={userPlayList}
+                    dataSource={userPlayList}
                     scroll={{ y: 400}}
                 />
             }
@@ -98,29 +114,33 @@ export default function BuildMyPlayList(){
                         enterButton 
                         style={{width: 300, margin: "10px 0"}}
                     />
-                    <List>
-                        <VirtualList
-                            data={searchResults}
-                            height={ContainerHeight}
-                            itemHeight={47}
-                            itemKey="id"
-                            // onScroll={()}
-                        >
-                            {item => (
-                                <List.Item key={item.id}>
-                                    <List.Item.Meta
-                                        avatar={<Avatar src={item.album.images[1].url} />}
-                                        title={item.name}
-                                        description={getArtistNames(item.artists)}
-                                    />
-                                    <div style={{flex: "1 1"}}>
-                                        {item.album.name} / {item.album.release_date}
-                                    </div>
-                                    <Button>新增</Button>
-                                </List.Item>
-                            )}
-                        </VirtualList>
-                    </List>
+                    {   searchResults.length > 0
+                        ?
+                            <List>
+                                <VirtualList
+                                    data={searchResults}
+                                    height={ContainerHeight}
+                                    itemHeight={47}
+                                    itemKey="id"
+                                    // onScroll={()}
+                                >
+                                    {item => (                                
+                                        <List.Item 
+                                            key={item.id}
+                                            extra={<AddButton onClick={()=> setUserPlayList([...userPlayList, item])}/>}
+                                        >
+                                            <List.Item.Meta
+                                                avatar={<Avatar src={item.album.images[1].url} />}
+                                                title={item.name}
+                                                description={getArtistNames(item.artists)}
+                                            />
+                                        </List.Item>
+                                    )}
+                                </VirtualList>
+                            </List>
+                        : 
+                            <Typography.Title level={5}>查無資料</Typography.Title>
+                    }
                 </>
             }
         />

@@ -1,6 +1,6 @@
 import {Form,Input,Button} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import AlertNotification from '../../components/alertNotifacation';
+import AlertNotification from '../../common/components/alertNotifacation';
 
 const LoginForm = () =>{
     const config = [{ required: true, message: '必填欄位' }];

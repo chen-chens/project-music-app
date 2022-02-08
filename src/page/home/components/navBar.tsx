@@ -1,4 +1,4 @@
-import { Menu } from "antd";
+import { Divider, Menu } from "antd";
 import { UserOutlined, FolderAddOutlined } from '@ant-design/icons';
 import { SideBar } from "../layouts";
 import React from "react";
@@ -12,11 +12,12 @@ export default function NavBar({showMobileNav}: {showMobileNav: boolean}){
     return(
         <SideBar showMobileNav={showMobileNav}> 
             <Menu theme="dark" mode="inline" onClick={(e) => navigate(`/master/${e.key}`)}>
-                <Menu.Item key="myPlayLists" icon={<UserOutlined style={iconStyle}/>}>
-                    我的播放清單
-                </Menu.Item>
                 <Menu.Item key="buildMyPlayList" icon={<FolderAddOutlined style={iconStyle}/>}>
                     建立播放清單
+                </Menu.Item>
+                <Divider style={{background: "#fff", margin: "5px 0"}} dashed/>
+                <Menu.Item key="myPlayLists" icon={<UserOutlined style={iconStyle}/>}>
+                    我的播放清單
                 </Menu.Item>
             </Menu>
         </SideBar>

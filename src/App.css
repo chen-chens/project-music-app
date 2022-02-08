@@ -65,6 +65,12 @@ body{
     border-bottom: 12px solid transparent;
     border-left: 20px solid #ffffff;
 }
+.ant-list-split .ant-list-item{
+    padding: 12px;
+}
+.ant-list-split .ant-list-item:hover{
+    background-color: blanchedalmond;
+}
 
 .currentPlaying{
     display: flex;

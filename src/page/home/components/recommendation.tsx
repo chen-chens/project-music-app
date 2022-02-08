@@ -2,7 +2,7 @@ import { Card, Spin, Tabs, Typography } from "antd";
 import Meta from "antd/lib/card/Meta";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import AlertNotification from "../../../components/alertNotifacation";
+import AlertNotification from "../../../common/components/alertNotifacation";
 import { currentUserData } from "../../../reduxToolkit";
 import { spotifyApi } from "../../../service/url";
 import { Genrees } from "../../../type/genrees";
@@ -11,7 +11,7 @@ import { DetailList } from "../layouts";
 
 export default function Recommendation(){
     const token = useSelector(currentUserData.token);
-    const [ recommendationList, setRecommendationList ] = useState<globalThis.SpotifyApi.RecommendationsFromSeedsResponse>();
+    const [ recommendationList, setRecommendationList ] = useState<SpotifyApi.TrackObjectFull[]>([]);
     const [ genresKey, setGenresKey ] = useState<string>(Genrees.NEW_RELEASE);
     const [ loading, setLoading ] = useState(false);
     const [ targetItem, setTargetItem ] = useState<SpotifyApi.TrackObjectFull>();
@@ -50,7 +50,8 @@ export default function Recommendation(){
             spotifyApi().getRecommendations({ seed_genres: genresKey })
             .then(res => {
                 console.log("res: ",res);
-                setRecommendationList(res);
+                const dataWithPreviewUrl = res.tracks.filter(item => item.preview_url !== null);
+                setRecommendationList(dataWithPreviewUrl);
             }).catch(err => {
                 console.log("err: ",err);
                 AlertNotification({
@@ -69,7 +70,7 @@ export default function Recommendation(){
                     <Tabs.TabPane tab={tag.title} key={tag.key}>
                         <Spin spinning={loading}>
                             <DetailList>
-                                {recommendationList?.tracks.map(item => (
+                                {recommendationList?.map(item => (
                                     <Card
                                         key={item.id}
                                         hoverable

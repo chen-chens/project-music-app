@@ -1,8 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
+interface UserDataType{
+    id: string;
+    playList: SpotifyApi.TrackObjectFull[];
+}
+
 interface CurrentUserType {
-    userData: any[]|null;
+    userData: UserDataType|null;
     token: string|null;
     expired: boolean;
 
@@ -27,7 +32,7 @@ export const currentUserSlice = createSlice({
         userNotExpired: (state) => {
             state.expired = false;
         },
-        getUserData: (state, action: PayloadAction<any[]|null>) => {
+        getUserData: (state, action: PayloadAction<UserDataType|null>) => {
             state.userData = action.payload;
         },
         logout: (state) => {
