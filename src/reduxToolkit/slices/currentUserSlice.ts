@@ -21,28 +21,25 @@ export const currentUserSlice = createSlice({
         getToken: (state, action: PayloadAction<string>) => {
             state.token = action.payload;
         },
-        userExpired: (state) => {
-            state.expired = true;
-        },
-        userNotExpired: (state) => {
-            state.expired = false;
+        userExpired: (state, action: PayloadAction<boolean>) => {
+            state.expired = action.payload;
         },
         logout: (state) => {
-            state = initialState;
+            return initialState;
         },
-        getUserData: (state, action: PayloadAction<UserDataType[]>) => {
+        getUserPlayList: (state, action: PayloadAction<UserDataType[]>) => {
             state.userPlayLists = action.payload;
         },
-        createUserData: (state, action: PayloadAction<UserDataType>) => {
+        createUserPlayList: (state, action: PayloadAction<UserDataType>) => {
             state.userPlayLists = [...state.userPlayLists, action.payload];
         },
-        updateUserData: (state, action: PayloadAction<UserDataType>) => {
+        updateUserPlayList: (state, action: PayloadAction<UserDataType>) => {
             const targetUserPlayListIndex = state.userPlayLists.findIndex(item => item.id === action.payload.id);
             if(targetUserPlayListIndex !== -1){
                 state.userPlayLists.splice(targetUserPlayListIndex, 1, action.payload);
             }
         },
-        deleteUserData: (state, action: PayloadAction<UserDataType>) => {
+        deleteUserPlayList: (state, action: PayloadAction<UserDataType>) => {
             const targetUserPlayListIndex = state.userPlayLists.findIndex(item => item.id === action.payload.id);
             if(targetUserPlayListIndex !== -1){
                 state.userPlayLists.splice(targetUserPlayListIndex, 1, action.payload);

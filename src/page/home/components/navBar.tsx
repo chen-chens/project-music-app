@@ -20,7 +20,7 @@ export default function NavBar({showMobileNav}: {showMobileNav: boolean}){
                 name: `我的播放清單 #${userPlayLists.length+1}`,
                 playList:[]
             };
-            dispatch(currentUserActions.createUserData(newPlayList));
+            dispatch(currentUserActions.createUserPlayList(newPlayList));
         }else{
             navigate(`/master/myPlayLists/${key}`);
         }

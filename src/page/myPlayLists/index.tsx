@@ -5,14 +5,17 @@ import VirtualList from 'rc-virtual-list';
 import BasicLayout from "../../common/layouts/basicLayout";
 import { spotifyApi } from "../../service/url";
 import { useDispatch, useSelector } from "react-redux";
-import { currentUserActions, currentUserData } from "../../reduxToolkit";
+import { currentPlayingActions, currentUserActions, currentUserData } from "../../reduxToolkit";
 import AlertNotification from "../../common/components/alertNotifacation";
 import { AddButton, DeleteButton } from "../../common/components/buttons";
 import { ColumnsType } from "antd/lib/table";
 import { useParams } from "react-router";
 import { UserDataType } from "../../type/userDataType";
 
+type OperationType = "create" | "delete";
+
 export default function MyPlayLists(){
+    const ref = React.useRef(null);
     const ContainerHeight = 400;
     const token = useSelector(currentUserData.token);
     const userPlayLists = useSelector(currentUserData.userPlayLists);
@@ -22,6 +25,7 @@ export default function MyPlayLists(){
     const [ searchValue, setSearchValue ] = useState("");
     const [ searchResults, setSearchResults ] = useState<SpotifyApi.TrackObjectFull[]>([]);
     const [ playListData, setPlayListData ] = useState<UserDataType>();
+    const [ offset, setOffset ] = useState(0);
 
     const columns: ColumnsType<SpotifyApi.TrackObjectFull> = [
         {
@@ -30,9 +34,10 @@ export default function MyPlayLists(){
             onCell: () => ({style: {textAlign: "center"}}),
             render: (row: SpotifyApi.TrackObjectFull) => ( 
                 <PlayCircleFilled style={{fontSize: 25}} onClick={()=> {
-                  
+                    dispatch(currentPlayingActions.startPlaying());
+                    dispatch(currentPlayingActions.recordPlayingData(row));
                 }}/>
-            )
+            ),
         },
         {
             title: '歌名',
@@ -47,10 +52,12 @@ export default function MyPlayLists(){
         {
             title: '專輯',
             dataIndex: ['album', 'name'],
+            responsive: ['sm'],
         },
         {
             title: '發行日期',
             dataIndex: ['album', 'release_date'],
+            responsive: ['lg'],
         },
         {
             title: '',
@@ -66,13 +73,14 @@ export default function MyPlayLists(){
         setPlayListData(currentUserPlayList);
     }, [urlParams.playListId, userPlayLists])
 
-    const onSearch = (value: string) => {
+    const onSearch = (value: string, preResults: SpotifyApi.TrackObjectFull[] = []) => {
         setLoading(true);
         spotifyApi().setAccessToken(token);
-        spotifyApi().searchTracks(value, { limit: 15 })
+        spotifyApi().searchTracks(value, { limit: 10, offset: offset })
         .then(res => {
             const getPreviewUrlData = res.tracks.items.filter(item => item.preview_url !== null);
-            setSearchResults(getPreviewUrlData);
+            const appendData = preResults.concat(getPreviewUrlData);
+            setSearchResults(appendData);
         }).catch(err => {
             console.log("err: ",err);
             AlertNotification({
@@ -82,20 +90,40 @@ export default function MyPlayLists(){
             })
         }).finally(() => setLoading(false))
     }
+    useEffect(() => {
+        if(searchValue){
+            onSearch(searchValue, searchResults)
+        }else{
+            onSearch("a");
+        }
+    }, [offset])
+
+    useEffect(()=> {
+        setSearchValue("");
+        setOffset(0);
+        onSearch("a");
+    }, [urlParams.playListId])
 
     const getArtistNames = (artistsData: SpotifyApi.ArtistObjectSimplified[]): string => {
         const artistNames = artistsData.map(item => item.name);
         return artistNames.join();
     }
 
-    const appendData = () => {
-       
-    }
-
     const onScroll = (event: React.UIEvent<HTMLElement, UIEvent>) => {
         if ((event.currentTarget.scrollHeight - event.currentTarget.scrollTop) === ContainerHeight) {
-            appendData();
+            setOffset(offset+10);
         }
+    }
+
+    const transferResults = (operation: OperationType, item: SpotifyApi.TrackObjectFull) => {
+        const tempResults = [...searchResults];
+        const targetIndex = searchResults.findIndex(item => item.id === item.id);
+        if(operation === "create"){
+            tempResults.splice(targetIndex, 1);
+        }else if(operation === "delete"){
+            tempResults.push(item);
+        }
+        setSearchResults(tempResults);
     }
 
     const handleAddItemToPlayList = (item: SpotifyApi.TrackObjectFull) => {
@@ -103,8 +131,8 @@ export default function MyPlayLists(){
             ...playListData as UserDataType,
             playList: (playListData?.playList) ? [...playListData.playList, item] : [item]
         };
-
-        dispatch(currentUserActions.updateUserData(updateCurrentPlayList))
+        dispatch(currentUserActions.updateUserPlayList(updateCurrentPlayList));
+        transferResults( "create", item);
     }
 
     const handleDeleteItemToPlayList = (row: SpotifyApi.TrackObjectFull) => {
@@ -117,13 +145,13 @@ export default function MyPlayLists(){
             ...playListData as UserDataType,
             playList: currentPlayListData
         };
-
-        dispatch(currentUserActions.deleteUserData(updateCurrentPlayList));
+        dispatch(currentUserActions.deleteUserPlayList(updateCurrentPlayList));
+        transferResults( "delete", row);
     }
 
     return(
         <BasicLayout
-            title={playListData?.name||"122"}
+            title={playListData?.name||""}
             main={
                 <Table 
                     size="small" 
@@ -131,17 +159,19 @@ export default function MyPlayLists(){
                     rowKey="id"
                     columns={columns}
                     dataSource={playListData?.playList}
-                    scroll={{ y: 400}}
+                    scroll={{y: 400}}
+                    pagination={false}
                 />
             }
             details={
                 <>
+                    <Typography.Title level={3}>推薦清單</Typography.Title>
                     <Input.Search 
                         placeholder="搜尋歌曲或專輯..." 
                         value={searchValue}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchValue(e.target.value)} 
-                        onSearch={onSearch}
-                        onPressEnter={(e: React.KeyboardEvent<HTMLInputElement>) => {}}
+                        onSearch={() => onSearch(searchValue)}
+                        onPressEnter={() => onSearch(searchValue)}
                         enterButton 
                         style={{width: 300, margin: "10px 0"}}
                     />
@@ -152,7 +182,8 @@ export default function MyPlayLists(){
                                     height={ContainerHeight}
                                     itemHeight={47}
                                     itemKey="id"
-                                    // onScroll={()}
+                                    onScroll={onScroll}
+                                    // ref={awesomeInputRef}
                                 >
                                     {item => (                                
                                         <List.Item 
@@ -168,7 +199,8 @@ export default function MyPlayLists(){
                                     )}
                                 </VirtualList>
                             </List>)
-                        :   <Typography.Title level={5}>查無資料</Typography.Title>
+                        :  
+                            <Typography.Title level={5}>查無資料</Typography.Title>
                     }
                 </>
             }

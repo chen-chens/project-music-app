@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { currentPlayingSlice } from "./slices/currentPlayingSlice";
 import {currentUserSlice} from './slices/currentUserSlice';
 
 
 export const store = configureStore({
     reducer:{
         currentUser: currentUserSlice.reducer,
+        currentPlaying: currentPlayingSlice.reducer,
     }
 })
 

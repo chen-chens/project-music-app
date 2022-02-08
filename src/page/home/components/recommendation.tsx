@@ -1,20 +1,20 @@
 import { Card, Spin, Tabs, Typography } from "antd";
 import Meta from "antd/lib/card/Meta";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AlertNotification from "../../../common/components/alertNotifacation";
-import { currentUserData } from "../../../reduxToolkit";
+import { currentPlayingActions, currentUserData } from "../../../reduxToolkit";
 import { spotifyApi } from "../../../service/url";
 import { Genrees } from "../../../type/genrees";
 import { DetailList } from "../layouts";
 
 
 export default function Recommendation(){
+    const dispatch = useDispatch();
     const token = useSelector(currentUserData.token);
     const [ recommendationList, setRecommendationList ] = useState<SpotifyApi.TrackObjectFull[]>([]);
     const [ genresKey, setGenresKey ] = useState<string>(Genrees.NEW_RELEASE);
     const [ loading, setLoading ] = useState(false);
-    const [ targetItem, setTargetItem ] = useState<SpotifyApi.TrackObjectFull>();
 
     const categoryTags = [
         {
@@ -22,8 +22,12 @@ export default function Recommendation(){
             title: "最新發行",
         },
         {
-            key: Genrees.K_POP,
-            title: "韓國流行樂",
+            key: Genrees.MOVIE,
+            title: "電影主題曲",
+        },
+        {
+            key: Genrees.RNB,
+            title: "R&B",
         },
         {
             key: Genrees.HIP_HOP,
@@ -49,7 +53,6 @@ export default function Recommendation(){
             spotifyApi().setAccessToken(token);
             spotifyApi().getRecommendations({ seed_genres: genresKey })
             .then(res => {
-                console.log("res: ",res);
                 const dataWithPreviewUrl = res.tracks.filter(item => item.preview_url !== null);
                 setRecommendationList(dataWithPreviewUrl);
             }).catch(err => {
@@ -76,7 +79,10 @@ export default function Recommendation(){
                                         hoverable
                                         style={{ width: 240, margin: 15 }}
                                         cover={<img alt={item.name} src={item.album.images[0].url} />}
-                                        onClick={()=>  setTargetItem(item)}
+                                        onClick={()=>  {
+                                            dispatch(currentPlayingActions.startPlaying());
+                                            dispatch(currentPlayingActions.recordPlayingData(item));
+                                        }}
                                     >
                                         <Meta title={item.name} description={item.artists[0].name} />
                                     </Card>

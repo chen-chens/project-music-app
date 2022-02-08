@@ -74,11 +74,12 @@ body{
 
 .currentPlaying{
     display: flex;
+    align-items: center;
 }
 
 
 .currentPlaying .thumbnail img{
-    display: block;
+    display: none;
 }
 
 .currentPlaying .txt{
@@ -99,6 +100,9 @@ body{
         display: none;
     }
     .logBtn{
+        display: block;
+    }
+    .currentPlaying .thumbnail img{
         display: block;
     }
 }

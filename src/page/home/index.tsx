@@ -4,9 +4,10 @@ import { MenuOutlined } from '@ant-design/icons';
 import { Button, Typography } from "antd";
 import { Outlet, useLocation, useNavigate } from "react-router";
 import qs from "qs";
-import { useDispatch } from "react-redux";
-import { currentUserActions } from "../../reduxToolkit";
+import { useDispatch, useSelector } from "react-redux";
+import { currentPlayingData, currentUserActions } from "../../reduxToolkit";
 import NavBar from "./components/navBar";
+import PlayBar from "../../common/components/playBar";
 
 
 export default function Home(){
@@ -14,6 +15,7 @@ export default function Home(){
     const navigate = useNavigate();
     const location = useLocation(); // To get url
     const urlParams = qs.parse(location.hash.slice(1), { ignoreQueryPrefix: true }); // pase url params to get token
+    const showPlayBar = useSelector(currentPlayingData.showPlayBar);
     const [ showMobileNav, setShowMobileNav ] = useState(false);
 
     useEffect(()=> {
@@ -23,6 +25,12 @@ export default function Home(){
         }
     }, [urlParams.access_token])
 
+    const handleLogOut = () => {
+        navigate("/")
+        dispatch(currentUserActions.logout);
+    }
+
+
     return(
         <Layout>
             <TopHeader>
@@ -30,7 +38,7 @@ export default function Home(){
                 <Button className="menu" type="primary" onClick={() => setShowMobileNav(!showMobileNav)}>
                     <MenuOutlined />
                 </Button>
-                <Button className="logBtn" type="primary" onClick={()=> navigate("/")}>
+                <Button className="logBtn" type="primary" onClick={handleLogOut}>
                     登出
                 </Button>
             </TopHeader>
@@ -41,8 +49,7 @@ export default function Home(){
                 <Outlet /> 
                 <CopyRight>Music App © 2022 By Chen Huei Jan</CopyRight>
             </MainBody>
-
-            {/* <PlayBar targetItem={targetItem}/> */}
+            { showPlayBar && <PlayBar /> }
         </Layout>
     )
 }
