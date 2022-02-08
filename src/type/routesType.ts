@@ -1,8 +1,7 @@
-interface BasicRoutes{
+
+
+export interface RoutesType{
     path: string;
     element: JSX.Element;
-}
-
-export interface RoutesType extends BasicRoutes{
-    children?: BasicRoutes[];
+    children?: RoutesType[]
 }

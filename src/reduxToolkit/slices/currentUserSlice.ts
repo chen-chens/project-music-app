@@ -1,20 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../store";
+import { UserDataType } from "../../type/userDataType";
 
-interface UserDataType{
-    id: string;
-    playList: SpotifyApi.TrackObjectFull[];
-}
 
 interface CurrentUserType {
-    userData: UserDataType|null;
+    userPlayLists: UserDataType[];
     token: string|null;
     expired: boolean;
-
 }
 
 const initialState: CurrentUserType = {
-    userData: null,
+    userPlayLists: [{id: "1", name: "我的播放清單 #1", playList:[]}],
     token: null,
     expired: true
 }
@@ -32,13 +27,17 @@ export const currentUserSlice = createSlice({
         userNotExpired: (state) => {
             state.expired = false;
         },
-        getUserData: (state, action: PayloadAction<UserDataType|null>) => {
-            state.userData = action.payload;
-        },
         logout: (state) => {
             state = initialState;
-        }
+        },
+        getUserData: (state, action: PayloadAction<UserDataType[]>) => {
+            state.userPlayLists = action.payload;
+        },
+        createUserData: (state, action: PayloadAction<UserDataType>) => {
+            state.userPlayLists = [...state.userPlayLists, action.payload];
+        },
+        updateUserData: (state, action: PayloadAction<UserDataType[]>) => {
+            state.userPlayLists = action.payload;
+        },
     }
 });
-
-export const slecterToken = (state: RootState) => state.currentUser.token;
