@@ -36,8 +36,17 @@ export const currentUserSlice = createSlice({
         createUserData: (state, action: PayloadAction<UserDataType>) => {
             state.userPlayLists = [...state.userPlayLists, action.payload];
         },
-        updateUserData: (state, action: PayloadAction<UserDataType[]>) => {
-            state.userPlayLists = action.payload;
+        updateUserData: (state, action: PayloadAction<UserDataType>) => {
+            const targetUserPlayListIndex = state.userPlayLists.findIndex(item => item.id === action.payload.id);
+            if(targetUserPlayListIndex !== -1){
+                state.userPlayLists.splice(targetUserPlayListIndex, 1, action.payload);
+            }
+        },
+        deleteUserData: (state, action: PayloadAction<UserDataType>) => {
+            const targetUserPlayListIndex = state.userPlayLists.findIndex(item => item.id === action.payload.id);
+            if(targetUserPlayListIndex !== -1){
+                state.userPlayLists.splice(targetUserPlayListIndex, 1, action.payload);
+            }
         },
     }
 });

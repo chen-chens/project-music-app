@@ -29,7 +29,9 @@ export default function MyPlayLists(){
             width: 60,
             onCell: () => ({style: {textAlign: "center"}}),
             render: (row: SpotifyApi.TrackObjectFull) => ( 
-                <PlayCircleFilled style={{fontSize: 25}} onClick={()=> {}}/>
+                <PlayCircleFilled style={{fontSize: 25}} onClick={()=> {
+                  
+                }}/>
             )
         },
         {
@@ -54,7 +56,7 @@ export default function MyPlayLists(){
             title: '',
             width: 100,
             render: (row: SpotifyApi.TrackObjectFull) => (
-                <DeleteButton onClick={()=> {}}/>
+                <DeleteButton onClick={()=> handleDeleteItemToPlayList(row)}/>
             )
         },
     ];
@@ -65,13 +67,10 @@ export default function MyPlayLists(){
     }, [urlParams.playListId, userPlayLists])
 
     const onSearch = (value: string) => {
-        console.log(value);
         setLoading(true);
-
         spotifyApi().setAccessToken(token);
         spotifyApi().searchTracks(value, { limit: 15 })
         .then(res => {
-            console.log("res: ",res);
             const getPreviewUrlData = res.tracks.items.filter(item => item.preview_url !== null);
             setSearchResults(getPreviewUrlData);
         }).catch(err => {
@@ -100,16 +99,26 @@ export default function MyPlayLists(){
     }
 
     const handleAddItemToPlayList = (item: SpotifyApi.TrackObjectFull) => {
-        const tempUserPlayList = [...userPlayLists];
-        if(playListData){
-            const updateCurrentPlayList = {
-                ...playListData,
-                playList: (playListData?.playList) ? [...playListData.playList, item] : [item]
-            };
-            tempUserPlayList.splice(Number(playListData.id)-1, 1, updateCurrentPlayList)
+        const updateCurrentPlayList = {
+            ...playListData as UserDataType,
+            playList: (playListData?.playList) ? [...playListData.playList, item] : [item]
+        };
+
+        dispatch(currentUserActions.updateUserData(updateCurrentPlayList))
+    }
+
+    const handleDeleteItemToPlayList = (row: SpotifyApi.TrackObjectFull) => {
+        const currentPlayListData = (playListData?.playList) ? [...playListData.playList] : [];
+        const targetDataIndex = currentPlayListData.findIndex(item => item.id === row.id);
+        if(targetDataIndex !== -1){
+            currentPlayListData.splice(targetDataIndex, 1)
         }
-        
-        dispatch(currentUserActions.updateUserData(tempUserPlayList))
+        const updateCurrentPlayList = {
+            ...playListData as UserDataType,
+            playList: currentPlayListData
+        };
+
+        dispatch(currentUserActions.deleteUserData(updateCurrentPlayList));
     }
 
     return(
