@@ -43,7 +43,7 @@ export default function Home(){
                 </Button>
             </TopHeader>
 
-            <NavBar showMobileNav={showMobileNav}/>
+            <NavBar showMobileNav={showMobileNav} setShowMobileNav={setShowMobileNav}/>
 
             <MainBody>
                 <Outlet /> 

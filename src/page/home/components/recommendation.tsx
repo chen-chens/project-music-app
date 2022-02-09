@@ -77,7 +77,7 @@ export default function Recommendation(){
                                     <Card
                                         key={item.id}
                                         hoverable
-                                        style={{ width: 240, margin: 15 }}
+                                        // style={{ width: 240, margin: 15 }}
                                         cover={<img alt={item.name} src={item.album.images[0].url} />}
                                         onClick={()=>  {
                                             dispatch(currentPlayingActions.startPlaying());

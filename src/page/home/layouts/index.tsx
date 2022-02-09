@@ -76,7 +76,6 @@ export const MainBody = styled.section`
 export const DetailList = styled.main`
     display: flex;
     flex-wrap: wrap;
-    /* align-items: stretch; */
 `;
 
 

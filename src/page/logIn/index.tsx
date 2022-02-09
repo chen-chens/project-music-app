@@ -13,9 +13,10 @@ export default function LogIn(){
             style={{height: '100vh', flexDirection:'column',}}
         >
             <Card 
+                className="logInCard"
                 title={<Typography.Title level={3} style={{textAlign: "center"}}>Welcom to Music App</Typography.Title>} 
                 bordered 
-                style={{ width: 400, boxShadow: '0 0 10px #adadad4c' }}
+                // style={{ width: 400, boxShadow: '0 0 10px #adadad4c' }}
             >
                 <LoginForm />
             </Card>     

@@ -1,5 +1,5 @@
 import { Avatar, Input, List, Table, Typography } from "antd";
-import { PlayCircleFilled } from '@ant-design/icons';
+import { PlayCircleFilled, PlusCircleOutlined, MinusCircleFilled } from '@ant-design/icons';
 import React, { useEffect, useState } from "react";
 import VirtualList from 'rc-virtual-list';
 import BasicLayout from "../../common/layouts/basicLayout";
@@ -11,6 +11,7 @@ import { AddButton, DeleteButton } from "../../common/components/buttons";
 import { ColumnsType } from "antd/lib/table";
 import { useParams } from "react-router";
 import { UserDataType } from "../../type/userDataType";
+import { iconStyle } from "../../common/style";
 
 type OperationType = "create" | "delete";
 
@@ -33,7 +34,7 @@ export default function MyPlayLists(){
             width: 60,
             onCell: () => ({style: {textAlign: "center"}}),
             render: (row: SpotifyApi.TrackObjectFull) => ( 
-                <PlayCircleFilled style={{fontSize: 25}} onClick={()=> {
+                <PlayCircleFilled style={iconStyle} onClick={()=> {
                     dispatch(currentPlayingActions.startPlaying());
                     dispatch(currentPlayingActions.recordPlayingData(row));
                 }}/>
@@ -41,6 +42,7 @@ export default function MyPlayLists(){
         },
         {
             title: '歌名',
+            width: 300,
             render: (row: SpotifyApi.TrackObjectFull) => ( 
                 <List.Item.Meta
                     avatar={<Avatar src={row.album.images[1].url} />}
@@ -51,19 +53,23 @@ export default function MyPlayLists(){
         },
         {
             title: '專輯',
+            width: 150,
             dataIndex: ['album', 'name'],
-            responsive: ['sm'],
+            responsive: ['md'],
         },
         {
             title: '發行日期',
+            width: 150,
             dataIndex: ['album', 'release_date'],
             responsive: ['lg'],
         },
         {
             title: '',
-            width: 100,
+            width: 60,
+            onCell: () => ({style: {textAlign: "end"}}),
             render: (row: SpotifyApi.TrackObjectFull) => (
                 <DeleteButton onClick={()=> handleDeleteItemToPlayList(row)}/>
+                // <MinusCircleFilled style={iconStyle} onClick={()=> handleDeleteItemToPlayList(row)}/>
             )
         },
     ];
@@ -165,7 +171,7 @@ export default function MyPlayLists(){
             }
             details={
                 <>
-                    <Typography.Title level={3}>推薦清單</Typography.Title>
+                    <Typography.Title level={4}>加入推薦清單</Typography.Title>
                     <Input.Search 
                         placeholder="搜尋歌曲或專輯..." 
                         value={searchValue}
@@ -173,7 +179,7 @@ export default function MyPlayLists(){
                         onSearch={() => onSearch(searchValue)}
                         onPressEnter={() => onSearch(searchValue)}
                         enterButton 
-                        style={{width: 300, margin: "10px 0"}}
+                        style={{maxWidth: 300}}
                     />
                     {   searchResults.length > 0
                         ?   (<List>
@@ -188,7 +194,10 @@ export default function MyPlayLists(){
                                     {item => (                                
                                         <List.Item 
                                             key={item.id}
-                                            extra={<AddButton onClick={() => handleAddItemToPlayList(item)}/>}
+                                            extra={
+                                                // <PlusCircleOutlined style={{marginLeft: 10, fontSize: "2rem"}} onClick={() => handleAddItemToPlayList(item)} />
+                                            <AddButton style={{marginLeft: 10}} onClick={() => handleAddItemToPlayList(item)}/>
+                                        }
                                         >
                                             <List.Item.Meta
                                                 avatar={<Avatar src={item.album.images[1].url} />}

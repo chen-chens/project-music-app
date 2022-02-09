@@ -13,7 +13,7 @@ export default function BasicLayout(props: BasicLayoutProps){
     return(
         <Row gutter={[15, 15]}>
             <Col span={24}>
-                <Typography.Title level={1}>{props.title}</Typography.Title>
+                <Typography.Title level={2}>{props.title}</Typography.Title>
             </Col>
             <Col span={24}>{props.main}</Col>
             <Divider dashed style={{margin: 0}}/>

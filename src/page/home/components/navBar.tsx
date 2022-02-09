@@ -4,11 +4,15 @@ import { SideBar } from "../layouts";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { currentUserActions, currentUserData } from "../../../reduxToolkit";
+import { iconStyle } from "../../../common/style";
 
+interface NavBarProps {
+    showMobileNav: boolean;
+    setShowMobileNav: (value: React.SetStateAction<boolean>) => void;
+}
 
-export default function NavBar({showMobileNav}: {showMobileNav: boolean}){
+export default function NavBar(props: NavBarProps){
     const BUILD_PLAYLIST = "buildMyPlayList";
-    const iconStyle = {fontSize: "18px", fontWeight: 600 };
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const userPlayLists = useSelector(currentUserData.userPlayLists);
@@ -23,11 +27,12 @@ export default function NavBar({showMobileNav}: {showMobileNav: boolean}){
             dispatch(currentUserActions.createUserPlayList(newPlayList));
         }else{
             navigate(`/master/myPlayLists/${key}`);
+            props.setShowMobileNav(!props.showMobileNav);
         }
     }
 
     return(
-        <SideBar showMobileNav={showMobileNav}> 
+        <SideBar showMobileNav={props.showMobileNav}> 
             <Menu theme="dark" mode="inline" onClick={(e) => handleMenuClick(e.key)}>
                 <Menu.Item key={BUILD_PLAYLIST} icon={<FolderAddOutlined style={iconStyle}/>}>
                     建立播放清單
