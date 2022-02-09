@@ -1,17 +1,65 @@
 @import '~antd/dist/antd.css';
+
+:root{
+    --primary-color: #727cf5;
+    --secondary-color: #a3aaf1;
+    --info-color: var(--success-color);
+    --active-color: #ff8800;
+    --danger-color: #fa5c7c;
+    --success-color: #a4c4bb;
+    --success-color-100: #d5ece6;
+
+    --gray-100: #f1f3fa;
+    --gray-200: #eef2f7;
+    --gray-300: #dee2e6;
+    --gray-400: #ced4da;
+    --gray-500: #adb5bd;
+    --gray-600: #98a6ad;
+    --gray-700: #6c757d;
+    --gray-800: #343a40;
+    --gray-900: #313a46;
+    --shadow-100: #adadad23;
+    --shadow-200: #adadad4d;
+    --shadow-300: #313a4652;
+
+    --light-theme: #fff;
+    --dark-theme: var(--gray-900);
+
+    --font-size-base: 1rem;
+    --font-weight-base: 400;
+    --line-height-base: 1.5;
+}
+html{
+    --antd-wave-shadow-color: var(--secondary-color);
+}
+::selection{
+    background-color: var(--primary-color);
+}
 body{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-base);
+}
+.ant-btn-primary{
+    border-color: var(--primary-color);
+    background: var(--primary-color);
+}
+.ant-btn-primary:hover{
+    border-color: var(--secondary-color);
+    background: var(--secondary-color);
 }
 
 .ant-typography.logo{
     height: 40px;
-    color: #a3aaf1;
-    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    color: var(--gray-100);
     cursor: pointer;
+    font-family: 'Permanent Marker', cursive;
 }
-.menu{
+
+/* Mobile menu */
+.menuBtn{
     height: 60px;
     width: 60px;
     position: fixed;
@@ -35,10 +83,34 @@ body{
 .logInCard.ant-card.ant-card-bordered{
     width: 100%;
     max-width: 400px;
-    box-shadow: 0 0 10px #adadad4d;
+    box-shadow: 0 0 10px var(--shadow-200);
 }
 
+
 /* Recommendation */
+.ant-tabs-tab:hover{
+    color: var(--primary-color);
+}
+.ant-tabs-tab + .ant-tabs-tab{
+    margin-left: 0.8rem;
+}
+.ant-tabs-tab .ant-tabs-tab-btn{
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+    padding: 5px 10px;
+    border-radius: 10px
+}
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn{
+    background-color: var(--success-color-100);
+    color: var(--gray-900);
+    border: 1px solid var(--success-color);
+    text-shadow: none;
+    font-weight: calc(var(--font-weight-base) * 1.5);
+}
+.ant-tabs-ink-bar.ant-tabs-ink-bar-animated{
+    background-color: transparent;
+}
+
 .ant-card.ant-card-bordered.ant-card-hoverable{
     position: relative;
     width: calc(100% - 30px);
@@ -47,61 +119,32 @@ body{
 .ant-card.ant-card-bordered.ant-card-hoverable::before{
     content: '';
     display: block;
-    width: 0px;
-    height: 0px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    border: 2px solid #a3aaf1;
-    background-color: #727cf5;
+    border: 2px solid var(--secondary-color);
+    background-color: var(--primary-color);
     position: absolute;
     bottom: 20%;
     right: 20px;
-    transition: linear .2s;
-}
-.ant-card.ant-card-bordered.ant-card-hoverable:hover::before{
-    width: 60px;
-    height: 60px;
+    color: var(--success-color);
 }
 .ant-card.ant-card-bordered.ant-card-hoverable::after{
     content: '';
     display: block;
-    border: none;
     position: absolute;
     bottom: calc(20% + 17px);
     right: calc(20px + 17px);
-    transition: linear .2s;
-}
-.ant-card.ant-card-bordered.ant-card-hoverable:hover::after{
-    border-right: 0;
     border-top: 12px solid transparent;
     border-bottom: 12px solid transparent;
+    border-right: 0;
     border-left: 20px solid #ffffff;
 }
 
 .ant-list-split .ant-list-item:hover{
-    background-color: blanchedalmond;
+    background-color: var(--shadow-100);
 }
 
-
-/* PlayBar */
-.currentPlaying{
-    display: flex;
-    align-items: center;
-}
-.currentPlaying .thumbnail img{
-    display: none;
-}
-
-.currentPlaying .txt{
-    margin: 0 10px;
-}
-
-.currentPlaying .mainTitle{
-    font-size: 16px;
-}
-
-.currentPlaying .description{
-    font-size: 14px;
-}
 
 @media(min-width: 576px){
     .ant-card.ant-card-bordered.ant-card-hoverable{
@@ -110,9 +153,8 @@ body{
 
 }
 
-
 @media(min-width: 768px){
-    .menu{
+    .menuBtn{
         display: none;
     }
     .logBtn{
@@ -121,16 +163,36 @@ body{
 
     .logInCard.ant-card.ant-card-bordered{
         width: 400px;
-        border: 1px solid #f0f0f0;
+        border: 1px solid var(--gray-300);
+    }
+    .logInCard .ant-card-head{
+        background: var(--gray-100);
+        border-bottom: 1px solid var(--gray-30);
     }
 
     .ant-card.ant-card-bordered.ant-card-hoverable{
         width: calc(33.333333% - 30px);
     }
-
-    .currentPlaying .thumbnail img{
-        display: block;
+    .ant-card.ant-card-bordered.ant-card-hoverable::before{
+        width: 0px;
+        height: 0px;    
+        transition: linear .2s;
     }
+    .ant-card.ant-card-bordered.ant-card-hoverable:hover::before{
+        width: 60px;
+        height: 60px;
+    }
+    .ant-card.ant-card-bordered.ant-card-hoverable::after{
+        border: none;
+        transition: linear .2s;
+    }
+    .ant-card.ant-card-bordered.ant-card-hoverable:hover::after{
+        border-top: 12px solid transparent;
+        border-bottom: 12px solid transparent;
+        border-right: 0;
+        border-left: 20px solid #ffffff;
+    }
+    
 }
 
 @media(min-width: 1200px){

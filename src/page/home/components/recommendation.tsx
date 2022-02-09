@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AlertNotification from "../../../common/components/alertNotifacation";
 import { currentPlayingActions, currentUserData } from "../../../reduxToolkit";
-import { spotifyApi } from "../../../service/url";
+import { spotifyApi, checkStatusCode } from "../../../service/url";
 import { Genrees } from "../../../type/genrees";
 import { DetailList } from "../layouts";
 
@@ -56,7 +56,9 @@ export default function Recommendation(){
                 const dataWithPreviewUrl = res.tracks.filter(item => item.preview_url !== null);
                 setRecommendationList(dataWithPreviewUrl);
             }).catch(err => {
-                console.log("err: ",err);
+                console.log("api getRecommendations err: ",err);
+                checkStatusCode(err.status, dispatch);
+
                 AlertNotification({
                     type: "error",
                     title: "取得資料失敗！"

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import '../../../App.css';
 
 
 export const Layout = styled.section`
@@ -13,8 +14,8 @@ export const TopHeader = styled.header`
     position: fixed;
     z-index: 2;
     padding: 10px;
-    background-color: #313a46;
-    box-shadow: 0px 3px 3px #313a4663;
+    background-color: var(--dark-theme);
+    box-shadow: 0px 3px 3px var(--shadow-300);
     display: flex;
     justify-content: space-between;
 `;
@@ -30,7 +31,7 @@ export const SideBar = styled.aside<SideBarProps>`
     left: 0;
     width: ${props => props.showMobileNav ? "100%" : 0}; 
     height: ${props => props.showMobileNav ? "100vh" : "auto"}; 
-    background-color: #313a46;
+    background-color: var(--dark-theme);
     transition: .2s all;
 
     ::before{
@@ -38,11 +39,14 @@ export const SideBar = styled.aside<SideBarProps>`
         display: block;
         margin-top: 60px;
     }
-
+    .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected{
+        background-color: var(--primary-color);
+    }
     .ant-menu.ant-menu-root.ant-menu-inline.ant-menu-dark{
         display: ${props => props.showMobileNav ? "block" : "none"}; 
         transition: .5s all;
         height: auto;
+        background-color: var(--dark-theme);
     }
 
     /* Medium */
@@ -64,7 +68,7 @@ export const MainBody = styled.section`
     margin-top: 60px;
     position: relative;
     transition: 0.2s all;
-    background-color: #fafbfe;
+    background-color: var(--light-theme);
 
     /* Medium */
     @media(min-width: 768px) {
@@ -83,6 +87,6 @@ export const CopyRight = styled.footer`
     margin-top: 15px;
     line-height: 80px;
     text-align: center;
-    border-top: 1px solid #98a6ad33;
-    color: #98a6ad;
+    border-top: 1px solid var(--shadow-200);
+    color: var(--gray-600);
 `;

@@ -4,7 +4,7 @@ import { SideBar } from "../layouts";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { currentUserActions, currentUserData } from "../../../reduxToolkit";
-import { iconStyle } from "../../../common/style";
+import { icon_style } from "../../../common/style";
 
 interface NavBarProps {
     showMobileNav: boolean;
@@ -34,11 +34,11 @@ export default function NavBar(props: NavBarProps){
     return(
         <SideBar showMobileNav={props.showMobileNav}> 
             <Menu theme="dark" mode="inline" onClick={(e) => handleMenuClick(e.key)}>
-                <Menu.Item key={BUILD_PLAYLIST} icon={<FolderAddOutlined style={iconStyle}/>}>
+                <Menu.Item key={BUILD_PLAYLIST} icon={<FolderAddOutlined style={icon_style}/>}>
                     建立播放清單
                 </Menu.Item>
                 {   userPlayLists.map(menu => (
-                    <Menu.Item key={menu.id} icon={<UserOutlined style={iconStyle}/>}>
+                    <Menu.Item key={menu.id} icon={<UserOutlined style={icon_style}/>}>
                         {menu.name}
                     </Menu.Item>
                 ))}

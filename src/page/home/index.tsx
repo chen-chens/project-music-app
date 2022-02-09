@@ -5,9 +5,10 @@ import { Button, Typography } from "antd";
 import { Outlet, useLocation, useNavigate } from "react-router";
 import qs from "qs";
 import { useDispatch, useSelector } from "react-redux";
-import { currentPlayingData, currentUserActions } from "../../reduxToolkit";
+import { currentPlayingData, currentUserActions, currentUserData } from "../../reduxToolkit";
 import NavBar from "./components/navBar";
 import PlayBar from "../../common/components/playBar";
+import LoginModal from "../logIn/loginMadal";
 
 
 export default function Home(){
@@ -16,12 +17,16 @@ export default function Home(){
     const location = useLocation(); // To get url
     const urlParams = qs.parse(location.hash.slice(1), { ignoreQueryPrefix: true }); // pase url params to get token
     const showPlayBar = useSelector(currentPlayingData.showPlayBar);
+    const expired = useSelector(currentUserData.expired);
     const [ showMobileNav, setShowMobileNav ] = useState(false);
 
     useEffect(()=> {
         if(urlParams.access_token){
             dispatch(currentUserActions.getToken(urlParams.access_token.toString())); // update token to redux
+            dispatch(currentUserActions.userExpired(false));
             // navigate("/master");
+        }else{
+            dispatch(currentUserActions.userExpired(true));
         }
     }, [urlParams.access_token])
 
@@ -34,8 +39,8 @@ export default function Home(){
     return(
         <Layout>
             <TopHeader>
-                <Typography.Title level={2} className="logo" onClick={() => navigate("/master")}>MUSIC</Typography.Title>
-                <Button className="menu" type="primary" onClick={() => setShowMobileNav(!showMobileNav)}>
+                <Typography.Title level={2} className="logo" onClick={() => navigate("/master")}>Music App</Typography.Title>
+                <Button className="menuBtn" type="primary" onClick={() => setShowMobileNav(!showMobileNav)}>
                     <MenuOutlined />
                 </Button>
                 <Button className="logBtn" type="primary" onClick={handleLogOut}>
@@ -50,6 +55,7 @@ export default function Home(){
                 <CopyRight>Music App © 2022 By Chen Huei Jan</CopyRight>
             </MainBody>
             { showPlayBar && <PlayBar /> }
+            <LoginModal expired={expired}/>
         </Layout>
     )
 }

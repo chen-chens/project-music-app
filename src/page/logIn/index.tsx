@@ -10,13 +10,12 @@ export default function LogIn(){
         <Row 
             justify="center"
             align="middle" 
-            style={{height: '100vh', flexDirection:'column',}}
+            style={{height: '100vh', flexDirection:'column'}}
         >
             <Card 
                 className="logInCard"
-                title={<Typography.Title level={3} style={{textAlign: "center"}}>Welcom to Music App</Typography.Title>} 
+                title={<Typography.Title level={1} style={{textAlign: "center", color: "#727cf5"}} className="logo">Music App</Typography.Title>} 
                 bordered 
-                // style={{ width: 400, boxShadow: '0 0 10px #adadad4c' }}
             >
                 <LoginForm />
             </Card>     

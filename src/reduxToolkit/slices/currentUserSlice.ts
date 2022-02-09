@@ -11,7 +11,7 @@ interface CurrentUserType {
 const initialState: CurrentUserType = {
     userPlayLists: [{id: "1", name: "我的播放清單 #1", playList:[]}],
     token: null,
-    expired: true
+    expired: false
 }
 
 export const currentUserSlice = createSlice({

@@ -3,7 +3,7 @@ import { PlayCircleFilled, PlusCircleOutlined, MinusCircleFilled } from '@ant-de
 import React, { useEffect, useState } from "react";
 import VirtualList from 'rc-virtual-list';
 import BasicLayout from "../../common/layouts/basicLayout";
-import { spotifyApi } from "../../service/url";
+import { spotifyApi, checkStatusCode } from "../../service/url";
 import { useDispatch, useSelector } from "react-redux";
 import { currentPlayingActions, currentUserActions, currentUserData } from "../../reduxToolkit";
 import AlertNotification from "../../common/components/alertNotifacation";
@@ -11,7 +11,8 @@ import { AddButton, DeleteButton } from "../../common/components/buttons";
 import { ColumnsType } from "antd/lib/table";
 import { useParams } from "react-router";
 import { UserDataType } from "../../type/userDataType";
-import { iconStyle } from "../../common/style";
+import { icon_style } from "../../common/style";
+import SpotifyWebApi from "spotify-web-api-js";
 
 type OperationType = "create" | "delete";
 
@@ -34,7 +35,7 @@ export default function MyPlayLists(){
             width: 60,
             onCell: () => ({style: {textAlign: "center"}}),
             render: (row: SpotifyApi.TrackObjectFull) => ( 
-                <PlayCircleFilled style={iconStyle} onClick={()=> {
+                <PlayCircleFilled style={{...icon_style, color: "#758f87"}} onClick={()=> {
                     dispatch(currentPlayingActions.startPlaying());
                     dispatch(currentPlayingActions.recordPlayingData(row));
                 }}/>
@@ -87,8 +88,10 @@ export default function MyPlayLists(){
             const getPreviewUrlData = res.tracks.items.filter(item => item.preview_url !== null);
             const appendData = preResults.concat(getPreviewUrlData);
             setSearchResults(appendData);
-        }).catch(err => {
-            console.log("err: ",err);
+            
+        }).catch((err: SpotifyWebApi.ErrorObject) => {
+            console.log("api searchTracks err: ",err);
+            checkStatusCode(err.status, dispatch);
             AlertNotification({
                 type: "error",
                 title: "搜尋失敗！",
