@@ -9,7 +9,8 @@ import {
     StepForwardFilled, 
     StepBackwardFilled,
 } from '@ant-design/icons';
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import AlertNotification from "./alertNotifacation";
 
 const PlayTool = styled.section`
     width: 100%;
@@ -55,7 +56,7 @@ const CurrentPlayingInfo = styled.section`
 `;
 
 const PlayController = styled.div`
-    flex: 1 0;
+    flex: 2 0;
     text-align: right;
 
     .anticon{
@@ -96,16 +97,57 @@ const PlayController = styled.div`
     }
 `;
 
-const Audio = styled.div`
+const AudioContainer = styled.div`
     @media(min-width: 768px){
         flex: 1 1;
     }
 `;
 
+
 export default function PlayBar(){
     const dispatch = useDispatch();
     const targetItem = useSelector(currentPlayingData.currentPlayingItem);
-    const [ isPaused, setIsPaused ] = useState(false);    
+    const [ isPaused, setIsPaused ] = useState(false);  
+
+    const audio = useMemo(() => new Audio(""), []); // create once
+    const ref = useRef(audio);
+
+    useEffect(() => {
+        ref.current.src = targetItem?.preview_url||"";
+        palyAudio();
+    }, [targetItem?.preview_url])
+
+    useEffect(() => {
+        ref.current.addEventListener('ended', () => {
+            toggleAudio();
+        });
+    }, [])
+
+    useEffect(() => {
+        if(isPaused){
+            pauseAudio();
+        }else{
+            palyAudio();
+        }
+    }, [isPaused])
+
+    const toggleAudio = () => setIsPaused(!isPaused);
+
+    const pauseAudio = () => {
+        ref.current.pause();
+    }
+
+    const palyAudio = () => {
+        ref.current.play()
+        .then(res => {
+        }).catch(err => {
+            console.log("audio err: ", err);
+            AlertNotification({
+                type: "error",
+                title: "播放器有問題，請稍後再試！"
+            })
+        }) 
+    }
 
     return(
         <PlayTool>
@@ -125,16 +167,16 @@ export default function PlayBar(){
             <PlayController>
                 <StepBackwardFilled />
                 {   isPaused 
-                    ?   <PlayCircleFilled onClick={() => setIsPaused(!isPaused)}/> 
-                    :   <PauseCircleFilled onClick={() => setIsPaused(!isPaused)}/>
+                    ?   <PlayCircleFilled onClick={toggleAudio}/> 
+                    :   <PauseCircleFilled onClick={toggleAudio}/>
                 }
                 <StepForwardFilled />
                 <Slider min={0} max={30} defaultValue={10} marks={{0: "00:00", 30: "00:30"}}/>
             </PlayController>
 
-            <Audio>
-                <audio id="audio" src={targetItem?.preview_url} autoPlay onPause={()=> setIsPaused(!isPaused)}></audio>
-            </Audio>
+            <AudioContainer>
+                
+            </AudioContainer>
         </PlayTool>  
     )
 }

@@ -1,5 +1,5 @@
-import { Button, Menu } from "antd";
-import { UserOutlined, FolderAddOutlined } from '@ant-design/icons';
+import { Menu } from "antd";
+import { UserOutlined, FolderAddOutlined, LogoutOutlined } from '@ant-design/icons';
 import { SideBar } from "../layouts";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,10 +15,14 @@ interface NavBarProps {
 export default function NavBar(props: NavBarProps){
     const BUILD_PLAYLIST = "buildMyPlayList";
     const LOG_OUT = "logOut";
-
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const userPlayLists = useSelector(currentUserData.userPlayLists);
+
+    const handleLogOut = () => {
+        navigate("/");
+        dispatch(currentUserActions.logout);
+    }
 
     const handleMenuClick = (key: string) => {
         switch (key) {
@@ -30,6 +34,10 @@ export default function NavBar(props: NavBarProps){
                 };
                 dispatch(currentUserActions.createUserPlayList(newPlayList));
             break;
+
+            case LOG_OUT:
+                handleLogOut();
+            break;
         
             default:
                 navigate(`/master/myPlayLists/${key}`);
@@ -38,10 +46,6 @@ export default function NavBar(props: NavBarProps){
         }
     }
 
-    const handleLogOut = () => {
-        navigate("/");
-        dispatch(currentUserActions.logout);
-    }
 
     return(
         <SideBar showMobileNav={props.showMobileNav}> 
@@ -54,9 +58,9 @@ export default function NavBar(props: NavBarProps){
                         {menu.name}
                     </Menu.Item>
                 ))}
-                <Button type="primary" className="mobileLogOut" onClick={handleLogOut}>
+                <Menu.Item key={LOG_OUT} icon={<LogoutOutlined style={icon_style}/>}>
                     登出
-                </Button>
+                </Menu.Item>
             </Menu>        
         </SideBar>
     )

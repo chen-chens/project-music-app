@@ -48,6 +48,10 @@ export const SideBar = styled.aside<SideBarProps>`
         height: auto;
         background-color: var(--dark-theme);
     }
+    .ant-menu-title-content{
+        font-size: calc(var(--font-size-base) * 0.9);
+        color: var(--gray-100);
+    }
 
     /* Medium */
     @media(min-width: 768px) {
@@ -56,6 +60,9 @@ export const SideBar = styled.aside<SideBarProps>`
 
         .ant-menu.ant-menu-root.ant-menu-inline.ant-menu-dark{
             display: block; 
+        }
+        .ant-menu-item:last-child{
+            display: none;
         }
     }
 `;

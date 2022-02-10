@@ -16,6 +16,7 @@ export default function Home(){
     const navigate = useNavigate();
     const location = useLocation(); // To get url
     const urlParams = qs.parse(location.hash.slice(1), { ignoreQueryPrefix: true }); // pase url params to get token
+    const token = useSelector(currentUserData.token);
     const showPlayBar = useSelector(currentPlayingData.showPlayBar);
     const expired = useSelector(currentUserData.expired);
     const [ showMobileNav, setShowMobileNav ] = useState(false);
@@ -23,7 +24,7 @@ export default function Home(){
     useEffect(()=> {
         if(urlParams.access_token){
             dispatch(currentUserActions.getToken(urlParams.access_token.toString())); // update token to redux
-            // navigate("/master");
+            navigate("/master");
         }else{
             dispatch(currentUserActions.logout);
         }

@@ -56,6 +56,7 @@ body{
     color: var(--gray-100);
     cursor: pointer;
     font-family: 'Permanent Marker', cursive;
+    margin: 0px 20px;
 }
 
 /* Mobile menu */
@@ -80,7 +81,7 @@ body{
     display: none;
     border-radius: 0;
 }
-.mobileLogOut{
+.ant-btn.ant-btn-primary.mobileLogOut{
     display: block;
     width: 90%;
     margin: auto;
@@ -165,9 +166,7 @@ body{
     .logBtn{
         display: block;
     }
-    .mobileLogOut{
-        display: none;
-    }
+
 
     .logInCard.ant-card.ant-card-bordered{
         width: 400px;
