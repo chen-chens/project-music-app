@@ -164,7 +164,6 @@ export default function MyPlayLists(){
             main={
                 <Table 
                     size="small" 
-                    loading={loading}
                     rowKey="id"
                     columns={columns}
                     dataSource={playListData?.playList}
@@ -185,7 +184,7 @@ export default function MyPlayLists(){
                         style={{maxWidth: 300}}
                     />
                     {   searchResults.length > 0
-                        ?   (<List>
+                        ?   (<List loading={loading}>
                                 <VirtualList
                                     data={searchResults}
                                     height={ContainerHeight}

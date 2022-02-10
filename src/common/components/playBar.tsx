@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { currentPlayingActions, currentPlayingData } from "../../reduxToolkit";
-import { MinusCircleFilled } from '@ant-design/icons';
+import { MinusCircleFilled, MinusCircleOutlined } from '@ant-design/icons';
 import { Avatar, List, Slider } from "antd";
 import { 
     PauseCircleFilled, 
@@ -9,7 +9,7 @@ import {
     StepForwardFilled, 
     StepBackwardFilled,
 } from '@ant-design/icons';
-import React from "react";
+import React, { useState } from "react";
 
 const PlayTool = styled.section`
     width: 100%;
@@ -23,36 +23,32 @@ const PlayTool = styled.section`
     display: flex;
     align-items: center;
     justify-content: space-between;
+
 `;
 
 const CurrentPlayingInfo = styled.section`
+    width: 100%;
     flex: 1 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    .ant-list-item-meta.playBarInfo{
-        width: 100%;
-    }
-
-    .ant-list-item-meta.playBarInfo .ant-list-item-meta-avatar{
+    .playBarInfo.ant-list-item-meta .ant-list-item-meta-avatar{
         display: none;
     }
-    .ant-list-item-meta.playBarInfo .ant-list-item-meta-content .ant-list-item-meta-title,
-    .ant-list-item-meta.playBarInfo .ant-list-item-meta-content .ant-list-item-meta-description{
+    .playBarInfo.ant-list-item-meta .ant-list-item-meta-content .ant-list-item-meta-title,
+    .playBarInfo.ant-list-item-meta .ant-list-item-meta-content .ant-list-item-meta-description{
         color: var(--success-color-100); 
     }
-    .ant-list-item-meta.playBarInfo .ant-list-item-meta-content .ant-list-item-meta-title{
+    .playBarInfo.ant-list-item-meta .ant-list-item-meta-content .ant-list-item-meta-title{
         font-size: calc(var(--font-size-base) * 1.2);
     }
-    .ant-list-item-meta.playBarInfo .ant-list-item-meta-content .ant-list-item-meta-description{
+    .playBarInfo.ant-list-item-meta .ant-list-item-meta-content .ant-list-item-meta-description{
         font-size: var(--font-size-base);
     }
 
     @media(min-width: 768px){
-        flex-direction: row;
-
-        .ant-list-item-meta.playBarInfo .ant-list-item-meta-avatar{
+        .playBarInfo.ant-list-item-meta .ant-list-item-meta-avatar{
             display: block;
         }
     }
@@ -60,7 +56,7 @@ const CurrentPlayingInfo = styled.section`
 
 const PlayController = styled.div`
     flex: 1 0;
-    text-align: center;
+    text-align: right;
 
     .anticon{
         font-size: 2rem;
@@ -68,9 +64,14 @@ const PlayController = styled.div`
         margin: 0 10px;
         cursor: pointer;
         vertical-align: middle;
+        display: none;
+    }
+    .anticon.anticon-pause-circle,
+    .anticon.anticon-play-circle{
+        display: inline-block;
     }
     .ant-slider{
-        width: 100%;
+        display: none;
     }
     .ant-slider .ant-slider-mark-text{
         color: var(--success-color-100);
@@ -81,19 +82,36 @@ const PlayController = styled.div`
     .ant-slider-rail{
         background-color: var(--gray-400);
     }
+
+    @media(min-width: 768px){
+        text-align: center;
+
+        .anticon{
+            display: inline-block;
+        }
+        .ant-slider{
+            display: block;
+            width: 100%;
+        }
+    }
 `;
 
-/* PlayBar */
+const Audio = styled.div`
+    @media(min-width: 768px){
+        flex: 1 1;
+    }
+`;
+
 export default function PlayBar(){
-    const style = {};
     const dispatch = useDispatch();
     const targetItem = useSelector(currentPlayingData.currentPlayingItem);
+    const [ isPaused, setIsPaused ] = useState(false);    
 
     return(
         <PlayTool>
             <CurrentPlayingInfo>
-                <MinusCircleFilled 
-                    style={{fontSize: "2rem", marginRight: 15, color: "#a4c4bb"}} 
+                <MinusCircleOutlined
+                    style={{fontSize: "1.7rem", marginRight: 15, color: "#fa5c7c"}} 
                     onClick={()=> dispatch(currentPlayingActions.stopPlaying())}
                 />
                 <List.Item.Meta
@@ -106,14 +124,17 @@ export default function PlayBar(){
 
             <PlayController>
                 <StepBackwardFilled />
-                <PlayCircleFilled />
-                <PauseCircleFilled />
+                {   isPaused 
+                    ?   <PlayCircleFilled onClick={() => setIsPaused(!isPaused)}/> 
+                    :   <PauseCircleFilled onClick={() => setIsPaused(!isPaused)}/>
+                }
                 <StepForwardFilled />
                 <Slider min={0} max={30} defaultValue={10} marks={{0: "00:00", 30: "00:30"}}/>
             </PlayController>
-            <div style={{flex: "1 1"}}>
-                <audio src={targetItem?.preview_url} autoPlay></audio>
-            </div>
+
+            <Audio>
+                <audio id="audio" src={targetItem?.preview_url} autoPlay onPause={()=> setIsPaused(!isPaused)}></audio>
+            </Audio>
         </PlayTool>  
     )
 }

@@ -1,8 +1,7 @@
 import axios from 'axios'
-import { Dispatch, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { Dispatch } from 'react';
 import SpotifyWebApi from 'spotify-web-api-js';
-import { currentUserActions, currentUserData } from '../reduxToolkit';
+import { currentUserActions } from '../reduxToolkit';
 
 export function spotifyApi(){
     const spotifyWebApi = new SpotifyWebApi();
