@@ -11,6 +11,7 @@ import {
 } from '@ant-design/icons';
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import AlertNotification from "./alertNotifacation";
+import moment from "moment";
 
 const PlayTool = styled.section`
     width: 100%;
@@ -56,7 +57,7 @@ const CurrentPlayingInfo = styled.section`
 `;
 
 const PlayController = styled.div`
-    flex: 2 0;
+    flex: 1 0;
     text-align: right;
 
     .anticon{
@@ -107,17 +108,22 @@ const AudioContainer = styled.div`
 export default function PlayBar(){
     const dispatch = useDispatch();
     const targetItem = useSelector(currentPlayingData.currentPlayingItem);
-    const [ isPaused, setIsPaused ] = useState(false);  
+    const [ isPaused, setIsPaused ] = useState(false);
+    const [ duration, setDuration ] = useState("00:00"); // 紀錄歌曲長度
+    const [ currentTime, setCurrentTime ] = useState(0); // 紀錄歌曲長度
 
     const audio = useMemo(() => new Audio(""), []); // create once
     const ref = useRef(audio);
 
     useEffect(() => {
         ref.current.src = targetItem?.preview_url||"";
-        palyAudio();
+        palyAudio();   
     }, [targetItem?.preview_url])
 
     useEffect(() => {
+        ref.current.addEventListener('timeupdate', () => {
+            return setCurrentTime(ref.current.currentTime);
+        });
         ref.current.addEventListener('ended', () => {
             toggleAudio();
         });
@@ -135,11 +141,14 @@ export default function PlayBar(){
 
     const pauseAudio = () => {
         ref.current.pause();
+        // setCurrentTime(ref.current.currentTime);
     }
 
     const palyAudio = () => {
         ref.current.play()
         .then(res => {
+            // setCurrentTime(ref.current.currentTime);
+            setDuration(moment(ref.current.duration*1000).format("mm:ss"));
         }).catch(err => {
             console.log("audio err: ", err);
             AlertNotification({
@@ -171,7 +180,15 @@ export default function PlayBar(){
                     :   <PauseCircleFilled onClick={toggleAudio}/>
                 }
                 <StepForwardFilled />
-                <Slider min={0} max={30} defaultValue={10} marks={{0: "00:00", 30: "00:30"}}/>
+                <Slider 
+                    min={0} 
+                    max={30} 
+                    step={0.000001}
+                    defaultValue={0} 
+                    value={currentTime} 
+                    marks={{0: "00:00", 30: duration}}
+                    tooltipVisible={false}
+                />
             </PlayController>
 
             <AudioContainer>
