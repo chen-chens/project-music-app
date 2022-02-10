@@ -23,18 +23,16 @@ export default function Home(){
     useEffect(()=> {
         if(urlParams.access_token){
             dispatch(currentUserActions.getToken(urlParams.access_token.toString())); // update token to redux
-            dispatch(currentUserActions.userExpired(false));
             // navigate("/master");
         }else{
-            dispatch(currentUserActions.userExpired(true));
+            dispatch(currentUserActions.logout);
         }
     }, [urlParams.access_token])
 
     const handleLogOut = () => {
-        navigate("/")
+        navigate("/");
         dispatch(currentUserActions.logout);
     }
-
 
     return(
         <Layout>
@@ -43,9 +41,7 @@ export default function Home(){
                 <Button className="menuBtn" type="primary" onClick={() => setShowMobileNav(!showMobileNav)}>
                     <MenuOutlined />
                 </Button>
-                <Button className="logBtn" type="primary" onClick={handleLogOut}>
-                    登出
-                </Button>
+                <Button className="logBtn" type="primary" onClick={handleLogOut}>登出</Button>
             </TopHeader>
 
             <NavBar showMobileNav={showMobileNav} setShowMobileNav={setShowMobileNav}/>

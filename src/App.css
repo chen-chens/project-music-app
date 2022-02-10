@@ -70,7 +70,7 @@ body{
     border-radius: 0;
 }
 
-/* LogIn */
+/* LogBtn */
 .logBtn{
     height: 60px;
     width: 80px;
@@ -79,6 +79,11 @@ body{
     right: 0;
     display: none;
     border-radius: 0;
+}
+.mobileLogOut{
+    display: block;
+    width: 90%;
+    margin: auto;
 }
 .logInCard.ant-card.ant-card-bordered{
     width: 100%;
@@ -160,14 +165,16 @@ body{
     .logBtn{
         display: block;
     }
+    .mobileLogOut{
+        display: none;
+    }
 
     .logInCard.ant-card.ant-card-bordered{
         width: 400px;
-        border: 1px solid var(--gray-300);
+        border: 1px solid var(--gray-200);
     }
     .logInCard .ant-card-head{
-        background: var(--gray-100);
-        border-bottom: 1px solid var(--gray-30);
+        border-bottom: 1px solid var(--gray-200);
     }
 
     .ant-card.ant-card-bordered.ant-card-hoverable{

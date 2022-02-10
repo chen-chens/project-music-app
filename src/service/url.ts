@@ -11,6 +11,6 @@ export function spotifyApi(){
 
 export function checkStatusCode(status: number, dispatch: Dispatch<any>){ 
     if(status === 401){
-        dispatch(currentUserActions.userExpired(true));
+        dispatch(currentUserActions.logout());
     }
 }

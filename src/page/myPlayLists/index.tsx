@@ -83,7 +83,7 @@ export default function MyPlayLists(){
     const onSearch = (value: string, preResults: SpotifyApi.TrackObjectFull[] = []) => {
         setLoading(true);
         spotifyApi().setAccessToken(token);
-        spotifyApi().searchTracks(value, { limit: 10, offset: offset })
+        spotifyApi().searchTracks(value||"a", { limit: 10, offset: offset })
         .then(res => {
             const getPreviewUrlData = res.tracks.items.filter(item => item.preview_url !== null);
             const appendData = preResults.concat(getPreviewUrlData);
@@ -148,14 +148,14 @@ export default function MyPlayLists(){
         const currentPlayListData = (playListData?.playList) ? [...playListData.playList] : [];
         const targetDataIndex = currentPlayListData.findIndex(item => item.id === row.id);
         if(targetDataIndex !== -1){
-            currentPlayListData.splice(targetDataIndex, 1)
+            currentPlayListData.splice(targetDataIndex, 1);
         }
         const updateCurrentPlayList = {
             ...playListData as UserDataType,
             playList: currentPlayListData
         };
         dispatch(currentUserActions.deleteUserPlayList(updateCurrentPlayList));
-        transferResults( "delete", row);
+        transferResults("delete", row);
     }
 
     return(
@@ -181,7 +181,7 @@ export default function MyPlayLists(){
                         onSearch={() => onSearch(searchValue)}
                         onPressEnter={() => onSearch(searchValue)}
                         enterButton 
-                        style={{maxWidth: 300}}
+                        style={{maxWidth: 450, width: "100%"}}
                     />
                     {   searchResults.length > 0
                         ?   (<List loading={loading}>

@@ -70,11 +70,7 @@ const LoginForm = () =>{
             </Form.Item>
 
             <Form.Item>
-                <Button 
-                    type="primary" 
-                    htmlType="submit"
-                    style={{ width:'100%'}}
-                >
+                <Button type="primary" htmlType="submit" style={{ width:'100%'}}>
                     登入
                 </Button>
             </Form.Item>
