@@ -19,7 +19,7 @@ const PlayTool = styled.section`
     padding: 20px;
     bottom: 0;
     left: 0;
-    background-color: #313a46;
+    background-color: var(--gray-800);
     border-top: 3px solid var(--success-color);
     z-index: 5;
     display: flex;
@@ -93,7 +93,9 @@ const PlayController = styled.div`
         }
         .ant-slider{
             display: block;
-            width: 100%;
+            width: 90%;
+            margin: auto;
+            margin-top: 1rem;
         }
     }
 `;
@@ -104,30 +106,26 @@ const AudioContainer = styled.div`
     }
 `;
 
-
 export default function PlayBar(){
     const dispatch = useDispatch();
     const targetItem = useSelector(currentPlayingData.currentPlayingItem);
+    const targetPlayList= useSelector(currentPlayingData.currentPlayingList);
+    const audio = useMemo(() => new Audio(""), []); // create once
+    const ref = useRef(audio);
+
     const [ isPaused, setIsPaused ] = useState(false);
     const [ duration, setDuration ] = useState("00:00"); // 紀錄歌曲長度
     const [ currentTime, setCurrentTime ] = useState(0); // 紀錄歌曲長度
 
-    const audio = useMemo(() => new Audio(""), []); // create once
-    const ref = useRef(audio);
+    useEffect(() => { // audio.addEventListener
+        ref.current.addEventListener('timeupdate', () => setCurrentTime(ref.current.currentTime));
+        ref.current.addEventListener('ended', () => nextAudio());
+    }, [])
 
-    useEffect(() => {
+    useEffect(() => { // change song & play
         ref.current.src = targetItem?.preview_url||"";
         palyAudio();   
     }, [targetItem?.preview_url])
-
-    useEffect(() => {
-        ref.current.addEventListener('timeupdate', () => {
-            return setCurrentTime(ref.current.currentTime);
-        });
-        ref.current.addEventListener('ended', () => {
-            toggleAudio();
-        });
-    }, [])
 
     useEffect(() => {
         if(isPaused){
@@ -141,13 +139,11 @@ export default function PlayBar(){
 
     const pauseAudio = () => {
         ref.current.pause();
-        // setCurrentTime(ref.current.currentTime);
     }
 
     const palyAudio = () => {
         ref.current.play()
         .then(res => {
-            // setCurrentTime(ref.current.currentTime);
             setDuration(moment(ref.current.duration*1000).format("mm:ss"));
         }).catch(err => {
             console.log("audio err: ", err);
@@ -158,12 +154,22 @@ export default function PlayBar(){
         }) 
     }
 
+    const preAudio = () => {
+        const findCurrentIndex = targetPlayList.findIndex(item => item.id === targetItem?.id);
+        dispatch(currentPlayingActions.recordPlayingData(targetPlayList[findCurrentIndex-1]));
+    }
+
+    const nextAudio = () => {
+        const findCurrentIndex = targetPlayList.findIndex(item => item.id === targetItem?.id);
+        dispatch(currentPlayingActions.recordPlayingData(targetPlayList[findCurrentIndex+1]));
+    }
+
     return(
         <PlayTool>
             <CurrentPlayingInfo>
                 <MinusCircleOutlined
                     style={{fontSize: "1.7rem", marginRight: 15, color: "#fa5c7c"}} 
-                    onClick={()=> dispatch(currentPlayingActions.stopPlaying())}
+                    onClick={()=> dispatch(currentPlayingActions.closePlayBar())}
                 />
                 <List.Item.Meta
                     className="playBarInfo"
@@ -174,12 +180,12 @@ export default function PlayBar(){
             </CurrentPlayingInfo>
 
             <PlayController>
-                <StepBackwardFilled />
+                <StepBackwardFilled onClick={preAudio}/>
                 {   isPaused 
-                    ?   <PlayCircleFilled onClick={toggleAudio}/> 
-                    :   <PauseCircleFilled onClick={toggleAudio}/>
+                    ? <PlayCircleFilled onClick={toggleAudio}/> 
+                    : <PauseCircleFilled onClick={toggleAudio}/>
                 }
-                <StepForwardFilled />
+                <StepForwardFilled onClick={nextAudio}/>
                 <Slider 
                     min={0} 
                     max={30} 

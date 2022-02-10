@@ -17,6 +17,7 @@ export const currentUserActions = {
 export const currentPlayingData = {
     showPlayBar: (state: RootState) => state.currentPlaying.showPlayBar,
     currentPlayingItem: (state: RootState) => state.currentPlaying.currentPlayingItem,
+    currentPlayingList: (state: RootState) => state.currentPlaying.currentPlayingList,
 }
 export const currentPlayingActions = {
     ...currentPlayingSlice.actions,

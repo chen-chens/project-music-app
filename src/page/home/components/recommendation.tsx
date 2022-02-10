@@ -82,8 +82,9 @@ export default function Recommendation(){
                                         // style={{ width: 240, margin: 15 }}
                                         cover={<img alt={item.name} src={item.album.images[0].url} />}
                                         onClick={()=>  {
-                                            dispatch(currentPlayingActions.startPlaying());
+                                            dispatch(currentPlayingActions.showPlayBar());
                                             dispatch(currentPlayingActions.recordPlayingData(item));
+                                            dispatch(currentPlayingActions.recordPlayingList(recommendationList));
                                         }}
                                     >
                                         <Meta title={item.name} description={item.artists[0].name} />

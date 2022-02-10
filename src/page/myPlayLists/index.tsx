@@ -36,8 +36,9 @@ export default function MyPlayLists(){
             onCell: () => ({style: {textAlign: "center"}}),
             render: (row: SpotifyApi.TrackObjectFull) => ( 
                 <PlayCircleFilled style={{...icon_style, color: "#758f87"}} onClick={()=> {
-                    dispatch(currentPlayingActions.startPlaying());
+                    dispatch(currentPlayingActions.showPlayBar());
                     dispatch(currentPlayingActions.recordPlayingData(row));
+                    dispatch(currentPlayingActions.recordPlayingList(playListData?.playList||[]));
                 }}/>
             ),
         },
