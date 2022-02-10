@@ -3,7 +3,7 @@ import { UserOutlined, FolderAddOutlined, LogoutOutlined } from '@ant-design/ico
 import { SideBar } from "../layouts";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { currentUserActions, currentUserData } from "../../../reduxToolkit";
+import { currentPlayingActions, currentUserActions, currentUserData } from "../../../reduxToolkit";
 import { icon_style } from "../../../common/style";
 import React from "react";
 
@@ -22,6 +22,7 @@ export default function NavBar(props: NavBarProps){
     const handleLogOut = () => {
         navigate("/");
         dispatch(currentUserActions.logout);
+        dispatch(currentPlayingActions.closePlayBar);
     }
 
     const handleMenuClick = (key: string) => {

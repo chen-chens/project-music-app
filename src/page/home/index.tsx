@@ -5,7 +5,7 @@ import { Button, Typography } from "antd";
 import { Outlet, useLocation, useNavigate } from "react-router";
 import qs from "qs";
 import { useDispatch, useSelector } from "react-redux";
-import { currentPlayingData, currentUserActions, currentUserData } from "../../reduxToolkit";
+import { currentPlayingActions, currentPlayingData, currentUserActions, currentUserData } from "../../reduxToolkit";
 import NavBar from "./components/navBar";
 import PlayBar from "../../common/components/playBar";
 import LoginModal from "../logIn/loginMadal";
@@ -26,12 +26,14 @@ export default function Home(){
             // navigate("/master"); 重新整理會拿不到 token
         }else{
             dispatch(currentUserActions.logout());
+            dispatch(currentPlayingActions.closePlayBar());
         }
     }, [urlParams.access_token])
 
     const handleLogOut = () => {
         navigate("/");
         dispatch(currentUserActions.logout);
+        dispatch(currentPlayingActions.closePlayBar());
     }
 
     return(

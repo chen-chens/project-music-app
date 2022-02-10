@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { currentPlayingActions, currentPlayingData } from "../../reduxToolkit";
-import { MinusCircleFilled, MinusCircleOutlined } from '@ant-design/icons';
+import { MinusCircleFilled, MinusCircleOutlined, SoundOutlined } from '@ant-design/icons';
 import { Avatar, List, Slider } from "antd";
 import { 
     PauseCircleFilled, 
@@ -9,7 +9,7 @@ import {
     StepForwardFilled, 
     StepBackwardFilled,
 } from '@ant-design/icons';
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import AlertNotification from "./alertNotifacation";
 import moment from "moment";
 
@@ -101,8 +101,40 @@ const PlayController = styled.div`
 `;
 
 const AudioContainer = styled.div`
+    .anticon{
+        font-size: 2rem;
+        color: var(--success-color-100);
+        margin: 0 10px;
+        cursor: pointer;
+        vertical-align: middle;
+        display: none;
+    }
+    .ant-slider{
+        display: none;
+    }
+    .ant-slider .ant-slider-mark-text{
+        color: var(--success-color-100);
+    }
+    .ant-slider-track{
+        background-color: var(--primary-color);
+    }
+    .ant-slider-rail{
+        background-color: var(--gray-400);
+    }
+
     @media(min-width: 768px){
         flex: 1 1;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+
+        .anticon{
+            display: inline-block;
+        }
+        .ant-slider{
+            display: inline-block;
+            width: 150px;            
+        }
     }
 `;
 
@@ -116,16 +148,23 @@ export default function PlayBar(){
     const [ isPaused, setIsPaused ] = useState(false);
     const [ duration, setDuration ] = useState("00:00"); // 紀錄歌曲長度
     const [ currentTime, setCurrentTime ] = useState(0); // 紀錄歌曲長度
+    const [ volume, setVolume ] = useState(100); 
 
     useEffect(() => { // audio.addEventListener
         ref.current.addEventListener('timeupdate', () => setCurrentTime(ref.current.currentTime));
         ref.current.addEventListener('ended', () => nextAudio());
+        return () => pauseAudio(); // 登出，暫停播放
     }, [])
 
     useEffect(() => { // change song & play
         ref.current.src = targetItem?.preview_url||"";
-        palyAudio();   
-    }, [targetItem?.preview_url])
+        if(isPaused){
+            toggleAudio();
+        }else{
+            palyAudio();
+            setVolume(ref.current.volume * 100);
+        }
+    }, [targetItem])
 
     useEffect(() => {
         if(isPaused){
@@ -164,6 +203,12 @@ export default function PlayBar(){
         dispatch(currentPlayingActions.recordPlayingData(targetPlayList[findCurrentIndex+1]));
     }
 
+    const handleVolumeChange = (vol: number) => {
+        ref.current.volume = vol / 100;
+        setVolume(vol);
+    }
+
+
     return(
         <PlayTool>
             <CurrentPlayingInfo>
@@ -198,7 +243,10 @@ export default function PlayBar(){
             </PlayController>
 
             <AudioContainer>
-                
+                <SoundOutlined />
+                <Slider
+                    tipFormatter={(val) => `${val}%`} min={0} max={100} step={10} value={volume}
+                    onChange={(vol: number) => handleVolumeChange(vol)}/>
             </AudioContainer>
         </PlayTool>  
     )
