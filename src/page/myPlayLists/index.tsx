@@ -1,24 +1,19 @@
-import { Avatar, Input, List, Table, Typography } from "antd";
-import { PlayCircleFilled, PlusCircleOutlined, MinusCircleFilled, MinusCircleOutlined } from '@ant-design/icons';
-import React, { useContext, useEffect, useState } from "react";
-import VirtualList from 'rc-virtual-list';
+import React, { useEffect, useState } from "react";
 import BasicLayout from "../../common/layouts/basicLayout";
-import { spotifyApi, checkStatusCode } from "../../service/url";
+import { spotifyApi, checkStatusCode } from "../../service";
 import { useDispatch, useSelector } from "react-redux";
-import { currentPlayingActions, currentUserActions, currentUserData } from "../../reduxToolkit";
+import { currentUserActions, currentUserData } from "../../reduxToolkit";
 import AlertNotification from "../../common/components/alertNotifacation";
-import { AddButton, DeleteButton } from "../../common/components/buttons";
-import { ColumnsType } from "antd/lib/table";
 import { useParams } from "react-router";
 import { UserDataType } from "../../type/userDataType";
-import { icon_style } from "../../common/style";
 import SpotifyWebApi from "spotify-web-api-js";
+import Details from "./details";
+import Main from "./main";
 
 type OperationType = "create" | "delete";
 
 export default function MyPlayLists(){
     const ref = React.useRef(null);
-    const ContainerHeight = 400;
     const token = useSelector(currentUserData.token);
     const userPlayLists = useSelector(currentUserData.userPlayLists);
     const urlParams = useParams();
@@ -28,53 +23,6 @@ export default function MyPlayLists(){
     const [ searchResults, setSearchResults ] = useState<SpotifyApi.TrackObjectFull[]>([]);
     const [ playListData, setPlayListData ] = useState<UserDataType>();
     const [ offset, setOffset ] = useState(0);
-
-    const columns: ColumnsType<SpotifyApi.TrackObjectFull> = [
-        {
-            title: '',
-            width: 40,
-            onCell: () => ({style: {textAlign: "center"}}),
-            render: (row: SpotifyApi.TrackObjectFull) => ( 
-                <PlayCircleFilled style={{...icon_style, color: "#a4c4bb"}} onClick={()=> {
-                    dispatch(currentPlayingActions.showPlayBar());
-                    dispatch(currentPlayingActions.recordPlayingData(row));
-                    dispatch(currentPlayingActions.recordPlayingList(playListData?.playList||[]));
-                }}/>
-            ),
-        },
-        {
-            title: '歌名',
-            width: 300,
-            render: (row: SpotifyApi.TrackObjectFull) => ( 
-                <List.Item.Meta
-                    avatar={<Avatar src={row.album.images[1].url} shape="square" size="large"/>}
-                    title={row.name}
-                    description={getArtistNames(row.artists)}
-                /> 
-            )
-        },
-        {
-            title: '專輯',
-            width: 150,
-            dataIndex: ['album', 'name'],
-            responsive: ['md'],
-        },
-        {
-            title: '發行日期',
-            width: 150,
-            dataIndex: ['album', 'release_date'],
-            responsive: ['lg'],
-        },
-        {
-            title: '',
-            width: 60,
-            onCell: () => ({style: {textAlign: "end"}}),
-            render: (row: SpotifyApi.TrackObjectFull) => (
-                // <DeleteButton onClick={()=> handleDeleteItemToPlayList(row)}/>
-                <MinusCircleOutlined style={{...icon_style, color: "#fa5c7c"}} onClick={()=> handleDeleteItemToPlayList(row)}/>
-            )
-        },
-    ];
 
     useEffect(() => {
         const currentUserPlayList = userPlayLists.find(item => item.id === urlParams.playListId);
@@ -119,12 +67,6 @@ export default function MyPlayLists(){
         return artistNames.join();
     }
 
-    const onScroll = (event: React.UIEvent<HTMLElement, UIEvent>) => {
-        if ((event.currentTarget.scrollHeight - event.currentTarget.scrollTop) === ContainerHeight) {
-            setOffset(offset+10);
-        }
-    }
-
     const transferResults = (operation: OperationType, item: SpotifyApi.TrackObjectFull) => {
         const tempResults = [...searchResults];
         const targetIndex = searchResults.findIndex(item => item.id === item.id);
@@ -163,58 +105,24 @@ export default function MyPlayLists(){
         <BasicLayout
             title={playListData?.name||""}
             main={
-                <Table 
-                    size="small" 
-                    rowKey="id"
-                    columns={columns}
-                    dataSource={playListData?.playList}
-                    scroll={{y: 400}}
-                    pagination={false}
+                <Main 
+                    playListData={playListData}
+                    getArtistNames={getArtistNames}
+                    handleDeleteItemToPlayList={handleDeleteItemToPlayList}
                 />
             }
             details={
-                <>
-                    <Typography.Title level={4}>加入推薦清單</Typography.Title>
-                    <Input.Search 
-                        placeholder="搜尋歌曲或專輯..." 
-                        value={searchValue}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchValue(e.target.value)} 
-                        onSearch={() => onSearch(searchValue)}
-                        onPressEnter={() => onSearch(searchValue)}
-                        enterButton 
-                        style={{maxWidth: 450, width: "100%"}}
-                    />
-                    {   searchResults.length > 0
-                        ?   (<List loading={loading}>
-                                <VirtualList
-                                    data={searchResults}
-                                    height={ContainerHeight}
-                                    itemHeight={47}
-                                    itemKey="id"
-                                    onScroll={onScroll}
-                                    // ref={awesomeInputRef}
-                                >
-                                    {item => (                                
-                                        <List.Item 
-                                            key={item.id}
-                                            extra={
-                                                // <PlusCircleOutlined style={{marginLeft: 10, fontSize: "2rem"}} onClick={() => handleAddItemToPlayList(item)} />
-                                            <AddButton style={{marginLeft: 10}} onClick={() => handleAddItemToPlayList(item)}/>
-                                        }
-                                        >
-                                            <List.Item.Meta
-                                                avatar={<Avatar src={item.album.images[1].url} />}
-                                                title={item.name}
-                                                description={getArtistNames(item.artists)}
-                                            />
-                                        </List.Item>
-                                    )}
-                                </VirtualList>
-                            </List>)
-                        :  
-                            <Typography.Title level={5}>查無資料</Typography.Title>
-                    }
-                </>
+                <Details 
+                    loading={loading}
+                    searchValue={searchValue}
+                    setSearchValue={setSearchValue}
+                    onSearch={onSearch}
+                    searchResults={searchResults}
+                    handleAddItemToPlayList={handleAddItemToPlayList}
+                    getArtistNames={getArtistNames}
+                    offset={offset}
+                    setOffset={setOffset}
+                />
             }
         />
     )

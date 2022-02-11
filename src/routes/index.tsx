@@ -1,6 +1,6 @@
 import React from "react";
 import Home from "../page/home";
-import Recommendation from "../page/home/components/recommendation";
+import Recommendation from "../page/recommendation";
 import LogIn from "../page/logIn";
 import MyPlayLists from "../page/myPlayLists";
 import { RoutesType } from "../type/routesType";

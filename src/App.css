@@ -40,6 +40,15 @@ body{
     font-size: var(--font-size-base);
     font-weight: var(--font-weight-base);
 }
+.ant-typography.logo{
+    text-align: center;
+    margin: 0px 10px;
+    line-height: 40px;
+    font-family: 'Permanent Marker', cursive, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
+    color: var(--primary-color);
+}
 .ant-btn-primary{
     border-color: var(--primary-color);
     background: var(--primary-color);
@@ -50,6 +59,9 @@ body{
 }
 .ant-row.ant-row-center.ant-row-middle{
     background-color: var(--gray-800);
+}
+.anticon[tabindex]:hover{
+    color: var(--active-color);
 }
 
 /* LogBtn */
@@ -71,11 +83,6 @@ body{
     width: 100%;
     max-width: 400px;
     box-shadow: 0 0 10px var(--shadow-200);
-}
-.logInCard.ant-card.ant-card-bordered .ant-card-head-title{
-    font-family: 'Permanent Marker', cursive, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
-    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-    'Noto Color Emoji';
 }
 
 

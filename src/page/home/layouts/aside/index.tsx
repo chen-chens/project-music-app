@@ -1,18 +1,18 @@
 import { Menu } from "antd";
 import { UserOutlined, FolderAddOutlined, LogoutOutlined } from '@ant-design/icons';
-import { SideBar } from "../layouts";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { currentPlayingActions, currentUserActions, currentUserData } from "../../../reduxToolkit";
-import { icon_style, ThemeContext } from "../../../common/style";
+import { currentPlayingActions, currentUserActions, currentUserData } from "../../../../reduxToolkit";
+import { icon_style, ThemeContext } from "../../../../common/theme";
 import React, { useContext } from "react";
+import { SideBar } from "./sideBar";
 
 interface NavBarProps {
     showMobileNav: boolean;
     setShowMobileNav: (value: React.SetStateAction<boolean>) => void;
 }
 
-export default function NavBar(props: NavBarProps){
+export const Aside = (props: NavBarProps) => {
     const BUILD_PLAYLIST = "buildMyPlayList";
     const LOG_OUT = "logOut";
     const dispatch = useDispatch();

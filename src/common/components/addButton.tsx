@@ -16,4 +16,3 @@ interface ButtonProps {
 }
 
 export const AddButton = (props: ButtonProps) => (<Button type="primary" {...props}>新增</Button>);
-export const DeleteButton = (props: ButtonProps) => (<Button {...props}>移除</Button>);

@@ -1,9 +1,7 @@
 import { Col, Divider, Row, Typography } from "antd";
-import React from "react";
 import { useContext } from "react";
 import { Container } from "../components/container";
-import { ThemeContext } from "../style";
-
+import { ThemeContext } from "../theme";
 
 interface BasicLayoutProps{
     title: string;

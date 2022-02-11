@@ -1,15 +1,14 @@
-import { Card, Spin, Tabs, Typography } from "antd";
+import { Card, Tabs, Typography} from "antd";
 import Meta from "antd/lib/card/Meta";
 import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
-import AlertNotification from "../../../common/components/alertNotifacation";
-import { Container } from "../../../common/components/container";
-import { ThemeContext } from "../../../common/style";
-import { currentPlayingActions, currentUserData } from "../../../reduxToolkit";
-import { spotifyApi, checkStatusCode } from "../../../service/url";
-import { Genrees } from "../../../type/genrees";
-import { DetailList } from "../layouts";
+import AlertNotification from "../../common/components/alertNotifacation";
+import { Container } from "../../common/components/container";
+import { ThemeContext } from "../../common/theme";
+import { currentPlayingActions, currentUserData } from "../../reduxToolkit";
+import { spotifyApi, checkStatusCode } from "../../service";
+import { Genrees } from "../../type/genrees";
+import { DetailList } from "./detailList";
 
 
 export default function Recommendation(){
@@ -77,24 +76,23 @@ export default function Recommendation(){
             <Tabs onChange={(key: string)=> setGenresKey(key)}>
                 {categoryTags.map(tag => (
                     <Tabs.TabPane tab={tag.title} key={tag.key}>
-                        <Spin spinning={loading}>
-                            <DetailList>
-                                {recommendationList?.map(item => (
-                                    <Card
-                                        key={item.id}
-                                        hoverable
-                                        cover={<img alt={item.name} src={item.album.images[0].url} />}
-                                        onClick={()=>  {
-                                            dispatch(currentPlayingActions.showPlayBar());
-                                            dispatch(currentPlayingActions.recordPlayingData(item));
-                                            dispatch(currentPlayingActions.recordPlayingList(recommendationList));
-                                        }}
-                                    >
-                                        <Meta title={item.name} description={item.artists[0].name} />
-                                    </Card>
-                                ))}
-                            </DetailList>
-                        </Spin>
+                        <DetailList>
+                            {recommendationList?.map(item => (
+                                <Card
+                                    loading={loading}
+                                    key={item.id}
+                                    hoverable
+                                    cover={loading ? null : <img alt={item.name} src={item.album.images[0].url} />}
+                                    onClick={()=>  {
+                                        dispatch(currentPlayingActions.showPlayBar());
+                                        dispatch(currentPlayingActions.recordPlayingData(item));
+                                        dispatch(currentPlayingActions.recordPlayingList(recommendationList));
+                                    }}
+                                >
+                                    <Meta title={item.name} description={item.artists[0].name} />
+                                </Card>
+                            ))}
+                        </DetailList>
                     </Tabs.TabPane>
                 ))}
             </Tabs>

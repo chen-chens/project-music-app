@@ -31,6 +31,9 @@ export const Container = styled.main`
     .ant-tabs-ink-bar.ant-tabs-ink-bar-animated{
         background-color: transparent;
     }
+    .ant-tabs > .ant-tabs-nav .ant-tabs-nav-more{
+        color: ${props => props.theme.color};
+    }
     
     .ant-list-split .ant-list-item{
         border-bottom: 1px solid var(--shadow-200);
@@ -62,5 +65,6 @@ export const Container = styled.main`
     .ant-table-tbody > tr.ant-table-placeholder:hover > td{
         background-color: var(--shadow-100);
     }
+
 
 `;

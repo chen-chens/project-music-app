@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { Dispatch } from 'react';
 import SpotifyWebApi from 'spotify-web-api-js';
 import { currentPlayingActions, currentUserActions } from '../reduxToolkit';
