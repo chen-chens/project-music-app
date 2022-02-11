@@ -1,10 +1,26 @@
+import React from "react";
+
 export const icon_style = {fontSize: "1.5rem", fontWeight: 600};
 
-export const cus_primary_color = "#727cf5";
+export const themes = {
+    light: {
+        background: "#fff",
+        navBground: "var(--shadow-100)",
+        color: "var(--gray-900)",
+        hightColor: "var(--success-color-100)",
+        hightBorderColor: "var(--success-color)",
+        logoColor: "#fff",
+    },
+    dark: {
+        background: "var(--gray-800)",
+        navBground: "var(--gray-800)",
+        color: "var(--gray-100)",
+        hightColor: "var(--hightlight-color)",
+        hightBorderColor: "var(--hightlight-color)",
+        logoColor: "var(--hightlight-color)",
+    }
+};
 
-export const color_style = {
-    primaryColor: "#727cf5",
-    primaryColorHover: "#727df5c4",
-    primaryColorActive: "#a4c4bb",
+export const ThemeContext = React.createContext(themes.dark);
 
-}
+

@@ -4,8 +4,8 @@ import { SideBar } from "../layouts";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { currentPlayingActions, currentUserActions, currentUserData } from "../../../reduxToolkit";
-import { icon_style } from "../../../common/style";
-import React from "react";
+import { icon_style, ThemeContext } from "../../../common/style";
+import React, { useContext } from "react";
 
 interface NavBarProps {
     showMobileNav: boolean;
@@ -18,6 +18,7 @@ export default function NavBar(props: NavBarProps){
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const userPlayLists = useSelector(currentUserData.userPlayLists);
+    const theme = useContext(ThemeContext);
 
     const handleLogOut = () => {
         navigate("/");
@@ -49,7 +50,7 @@ export default function NavBar(props: NavBarProps){
 
 
     return(
-        <SideBar showMobileNav={props.showMobileNav}> 
+        <SideBar showMobileNav={props.showMobileNav} theme={theme}> 
             <Menu theme="dark" mode="inline" defaultValue={BUILD_PLAYLIST} onClick={(e) => handleMenuClick(e.key)}>
                 <Menu.Item key={BUILD_PLAYLIST} icon={<FolderAddOutlined style={icon_style}/>}>
                     建立播放清單

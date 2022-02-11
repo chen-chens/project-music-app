@@ -1,8 +1,11 @@
 import { Card, Spin, Tabs, Typography } from "antd";
 import Meta from "antd/lib/card/Meta";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components";
 import AlertNotification from "../../../common/components/alertNotifacation";
+import { Container } from "../../../common/components/container";
+import { ThemeContext } from "../../../common/style";
 import { currentPlayingActions, currentUserData } from "../../../reduxToolkit";
 import { spotifyApi, checkStatusCode } from "../../../service/url";
 import { Genrees } from "../../../type/genrees";
@@ -10,6 +13,7 @@ import { DetailList } from "../layouts";
 
 
 export default function Recommendation(){
+    const theme = useContext(ThemeContext);
     const dispatch = useDispatch();
     const token = useSelector(currentUserData.token);
     const [ recommendationList, setRecommendationList ] = useState<SpotifyApi.TrackObjectFull[]>([]);
@@ -68,7 +72,7 @@ export default function Recommendation(){
     }, [token, genresKey])
     
     return(
-        <>
+        <Container theme={theme}>
             <Typography.Title level={3}>今天想聽什麼歌？</Typography.Title>
             <Tabs onChange={(key: string)=> setGenresKey(key)}>
                 {categoryTags.map(tag => (
@@ -79,7 +83,6 @@ export default function Recommendation(){
                                     <Card
                                         key={item.id}
                                         hoverable
-                                        // style={{ width: 240, margin: 15 }}
                                         cover={<img alt={item.name} src={item.album.images[0].url} />}
                                         onClick={()=>  {
                                             dispatch(currentPlayingActions.showPlayBar());
@@ -95,6 +98,6 @@ export default function Recommendation(){
                     </Tabs.TabPane>
                 ))}
             </Tabs>
-        </>
+        </Container>
     )
 }

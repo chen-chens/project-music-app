@@ -1,6 +1,6 @@
 import { Avatar, Input, List, Table, Typography } from "antd";
-import { PlayCircleFilled, PlusCircleOutlined, MinusCircleFilled } from '@ant-design/icons';
-import React, { useEffect, useState } from "react";
+import { PlayCircleFilled, PlusCircleOutlined, MinusCircleFilled, MinusCircleOutlined } from '@ant-design/icons';
+import React, { useContext, useEffect, useState } from "react";
 import VirtualList from 'rc-virtual-list';
 import BasicLayout from "../../common/layouts/basicLayout";
 import { spotifyApi, checkStatusCode } from "../../service/url";
@@ -32,10 +32,10 @@ export default function MyPlayLists(){
     const columns: ColumnsType<SpotifyApi.TrackObjectFull> = [
         {
             title: '',
-            width: 60,
+            width: 40,
             onCell: () => ({style: {textAlign: "center"}}),
             render: (row: SpotifyApi.TrackObjectFull) => ( 
-                <PlayCircleFilled style={{...icon_style, color: "#758f87"}} onClick={()=> {
+                <PlayCircleFilled style={{...icon_style, color: "#a4c4bb"}} onClick={()=> {
                     dispatch(currentPlayingActions.showPlayBar());
                     dispatch(currentPlayingActions.recordPlayingData(row));
                     dispatch(currentPlayingActions.recordPlayingList(playListData?.playList||[]));
@@ -47,7 +47,7 @@ export default function MyPlayLists(){
             width: 300,
             render: (row: SpotifyApi.TrackObjectFull) => ( 
                 <List.Item.Meta
-                    avatar={<Avatar src={row.album.images[1].url} />}
+                    avatar={<Avatar src={row.album.images[1].url} shape="square" size="large"/>}
                     title={row.name}
                     description={getArtistNames(row.artists)}
                 /> 
@@ -70,8 +70,8 @@ export default function MyPlayLists(){
             width: 60,
             onCell: () => ({style: {textAlign: "end"}}),
             render: (row: SpotifyApi.TrackObjectFull) => (
-                <DeleteButton onClick={()=> handleDeleteItemToPlayList(row)}/>
-                // <MinusCircleFilled style={iconStyle} onClick={()=> handleDeleteItemToPlayList(row)}/>
+                // <DeleteButton onClick={()=> handleDeleteItemToPlayList(row)}/>
+                <MinusCircleOutlined style={{...icon_style, color: "#fa5c7c"}} onClick={()=> handleDeleteItemToPlayList(row)}/>
             )
         },
     ];
