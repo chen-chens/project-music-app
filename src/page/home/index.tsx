@@ -18,14 +18,18 @@ export default function Home(){
     const urlParams = qs.parse(location.hash.slice(1), { ignoreQueryPrefix: true }); // pase url params to get token
     const showPlayBar = useSelector(currentPlayingData.showPlayBar);
     const expired = useSelector(currentUserData.expired);
+    const token = useSelector(currentUserData.token);
+
     const [ showMobileNav, setShowMobileNav ] = useState(false);
 
     useEffect(()=> {
         if(urlParams.access_token){
             dispatch(currentUserActions.getToken(urlParams.access_token.toString())); // update token to redux
-            // navigate("/master"); 重新整理會拿不到 token
-        }else{
-            dispatch(currentUserActions.logout());
+            navigate("/master");
+        }else if(location.pathname === "/master" && token){
+            dispatch(currentUserActions.getToken(token));
+        }else{ // 重新整理，顯示 LoginModal
+            dispatch(currentUserActions.userExpired(true));
             dispatch(currentPlayingActions.closePlayBar());
         }
     }, [urlParams.access_token])

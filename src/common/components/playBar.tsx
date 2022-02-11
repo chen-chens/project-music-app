@@ -245,7 +245,8 @@ export default function PlayBar(){
             <AudioContainer>
                 <SoundOutlined />
                 <Slider
-                    tipFormatter={(val) => `${val}%`} min={0} max={100} step={10} value={volume}
+                    min={0} max={100} step={10} value={volume}
+                    tipFormatter={(val) => `${val}%`} 
                     onChange={(vol: number) => handleVolumeChange(vol)}/>
             </AudioContainer>
         </PlayTool>  
