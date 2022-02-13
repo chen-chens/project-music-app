@@ -47,7 +47,7 @@ export const Container = styled.main`
     }
     
     .ant-table{
-        background-color: ${props => props.theme.background};
+        background-color: transparent;
     }
     .ant-table-small .ant-table-thead > tr > th{
         background-color: ${props => props.theme.navBground};

@@ -4,8 +4,8 @@ export const icon_style = {fontSize: "1.5rem", fontWeight: 600};
 
 export const themes = {
     light: {
-        background: "#fff",
-        navBground: "var(--shadow-100)",
+        background: "var(--shadow-100)",
+        navBground: "var(--gray-300)",
         color: "var(--gray-900)",
         hightColor: "var(--success-color-100)",
         hightBorderColor: "var(--success-color)",

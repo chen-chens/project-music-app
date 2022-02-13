@@ -1,7 +1,7 @@
 import { Avatar, Input, List, Typography } from "antd";
 import React from "react";
 import VirtualList from 'rc-virtual-list';
-import { AddButton } from "../../../common/components/addButton";
+import { AddButton } from "../../../components/addButton";
 
 interface DetailsProps{
     loading: boolean;

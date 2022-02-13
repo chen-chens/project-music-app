@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import BasicLayout from "../../common/layouts/basicLayout";
+import BasicLayout from "../../layouts/basicLayout";
 import { spotifyApi, checkStatusCode } from "../../service";
 import { useDispatch, useSelector } from "react-redux";
 import { currentUserActions, currentUserData } from "../../reduxToolkit";
-import AlertNotification from "../../common/components/alertNotifacation";
+import AlertNotification from "../../components/alertNotifacation";
 import { useParams } from "react-router";
 import { UserDataType } from "../../type/userDataType";
 import SpotifyWebApi from "spotify-web-api-js";

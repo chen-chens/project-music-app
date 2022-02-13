@@ -9,7 +9,7 @@ import {
     StepBackwardFilled,
 } from '@ant-design/icons';
 import { useEffect, useMemo, useRef, useState } from "react";
-import AlertNotification from "../../../common/components/alertNotifacation";
+import AlertNotification from "../../../components/alertNotifacation";
 import moment from "moment";
 import { CurrentPlayingInfo } from "./currentPlayingInfo";
 import { PlayTool } from "./playTool";

@@ -3,7 +3,7 @@ import { UserOutlined, FolderAddOutlined, LogoutOutlined } from '@ant-design/ico
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { currentPlayingActions, currentUserActions, currentUserData } from "../../../../reduxToolkit";
-import { icon_style, ThemeContext } from "../../../../common/theme";
+import { icon_style, ThemeContext } from "../../../../theme";
 import React, { useContext } from "react";
 import { SideBar } from "./sideBar";
 

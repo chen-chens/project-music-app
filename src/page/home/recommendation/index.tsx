@@ -2,12 +2,12 @@ import { Card, Tabs, Typography} from "antd";
 import Meta from "antd/lib/card/Meta";
 import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import AlertNotification from "../../common/components/alertNotifacation";
-import { Container } from "../../common/components/container";
-import { ThemeContext } from "../../common/theme";
-import { currentPlayingActions, currentUserData } from "../../reduxToolkit";
-import { spotifyApi, checkStatusCode } from "../../service";
-import { Genrees } from "../../type/genrees";
+import AlertNotification from "../../../components/alertNotifacation";
+import { Container } from "../../../components/container";
+import { ThemeContext } from "../../../theme";
+import { currentPlayingActions, currentUserData } from "../../../reduxToolkit";
+import { spotifyApi, checkStatusCode } from "../../../service";
+import { Genrees } from "../../../type/genrees";
 import { DetailList } from "./detailList";
 
 

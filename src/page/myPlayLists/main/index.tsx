@@ -1,8 +1,7 @@
 import Table, { ColumnsType } from "antd/lib/table";
 import { PlayCircleFilled, MinusCircleOutlined } from '@ant-design/icons';
-import React from "react";
 import { Avatar, List } from "antd";
-import { icon_style } from "../../../common/theme";
+import { icon_style } from "../../../theme";
 import { useDispatch } from "react-redux";
 import { currentPlayingActions } from "../../../reduxToolkit";
 import { UserDataType } from "../../../type/userDataType";

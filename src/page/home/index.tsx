@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { currentPlayingActions, currentPlayingData, currentUserActions, currentUserData } from "../../reduxToolkit";
 import PlayBar from "./playBar";
 import LoginModal from "../logIn/loginMadal";
-import { ThemeContext, themes } from "../../common/theme";
+import { ThemeContext, themes } from "../../theme";
 
 
 export default function Home(){

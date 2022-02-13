@@ -36,6 +36,7 @@ export const SideBar = styled.aside<SideBarProps>`
         font-size: calc(var(--font-size-base) * 0.9);
         color: ${props => props.theme.color};
     }
+    /* .ant-menu  */
 
     /* Medium */
     @media(min-width: 768px) {
