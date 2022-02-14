@@ -27,8 +27,8 @@ export default function Home(){
     useEffect(()=> {
         if(urlParams.access_token){
             dispatch(currentUserActions.getToken(urlParams.access_token.toString())); // update token to redux
-            navigate("/master");
-        }else if(location.pathname === "/master" && token){
+            navigate("/project-music-app/master");
+        }else if(location.pathname === "/project-music-app/master" && token){
             dispatch(currentUserActions.getToken(token));
         }else{ // 重新整理，顯示 LoginModal
             dispatch(currentUserActions.userExpired(true));
@@ -46,7 +46,7 @@ export default function Home(){
         <ThemeContext.Provider value={themeState}>
             <Layouts.Body>
                 <Layouts.TopHeader theme={themeState}>
-                    <Typography.Title level={1} className="logo" onClick={() => navigate("/master")}>Music App</Typography.Title>
+                    <Typography.Title level={1} className="logo" onClick={() => navigate("/project-music-app/master")}>Music App</Typography.Title>
                     <Button className="menuBtn" type="primary" onClick={() => setShowMobileNav(!showMobileNav)}>
                         <MenuOutlined />
                     </Button>

@@ -42,7 +42,7 @@ export const Aside = (props: NavBarProps) => {
             break;
         
             default:
-                navigate(`/master/myPlayLists/${key}`);
+                navigate(`/project-music-app/master/myPlayLists/${key}`);
                 props.setShowMobileNav(!props.showMobileNav);
             break;
         }
