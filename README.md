@@ -14,23 +14,24 @@
 
 ### 功能說明：
 
-- ## Recommendation
+- #### Recommendation
     - 切換頁籤，顯示不同類型的音樂推薦。
 
-- ## MyPlayLists
+- #### MyPlayLists
     - 新建個人音樂資料庫
     - 搜尋音樂
     - 新增、移除音樂
 
-- ## PlayBar
+- #### PlayBar
     - CurrentPlayingInfo: 目前播放音樂資訊
     - PlayController: 暫停、播放、上一首、下一首
     - VolumeController: 音量控制
 
-- ## RWD 顯示、深淺模式調整
+- #### RWD 顯示、深淺模式調整
 
 ### Demo：
 ![demo](./demo/demo.gif)
+### 手機顯示：
 ![mobileDemo](./demo/mobileDemo.png)
 
 ### 專案結構:
