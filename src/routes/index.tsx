@@ -12,7 +12,7 @@ export const routes: RoutesType[] = [
         element: <LogIn />,
     },
     {
-        path: "logIn",
+        path: "project-music-app/logIn",
         element: <LogIn />,
     },
     {

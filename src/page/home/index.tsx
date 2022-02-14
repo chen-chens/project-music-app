@@ -37,7 +37,7 @@ export default function Home(){
     }, [urlParams.access_token])
 
     const handleLogOut = () => {
-        navigate("/");
+        navigate("/project-music-app/logIn");
         dispatch(currentUserActions.logout);
         dispatch(currentPlayingActions.closePlayBar());
     }

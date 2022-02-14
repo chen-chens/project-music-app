@@ -21,7 +21,7 @@ export const Aside = (props: NavBarProps) => {
     const theme = useContext(ThemeContext);
 
     const handleLogOut = () => {
-        navigate("/");
+        navigate("/project-music-app/logIn");
         dispatch(currentUserActions.logout);
         dispatch(currentPlayingActions.closePlayBar);
     }
