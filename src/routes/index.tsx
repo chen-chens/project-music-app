@@ -8,7 +8,7 @@ import { RoutesType } from "../type/routesType";
 
 export const routes: RoutesType[] = [
     {
-        path: "/project-music-app/",
+        path: "project-music-app/",
         element: <LogIn />,
     },
     {
