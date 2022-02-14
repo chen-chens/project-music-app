@@ -56,7 +56,7 @@ export default function Recommendation(){
             spotifyApi().setAccessToken(token);
             spotifyApi().getRecommendations({ seed_genres: genresKey })
             .then(res => {
-                const dataWithPreviewUrl = res.tracks.filter(item => item.preview_url !== null);
+                const dataWithPreviewUrl = res.tracks.filter(item => item.preview_url !== null) as SpotifyApi.TrackObjectFull[];
                 setRecommendationList(dataWithPreviewUrl);
             }).catch(err => {
                 console.log("api getRecommendations err: ",err);
