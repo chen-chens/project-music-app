@@ -1,7 +1,7 @@
 {
   "name": "music-app",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "homepage": "https://chen-chens.github.io/project-music-app/",
   "dependencies": {
     "@reduxjs/toolkit": "^1.7.1",
