@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/project-music-app/static/css/main.d6f2adaa.css",
+    "main.js": "/project-music-app/static/js/main.9da48ac8.js",
+    "index.html": "/project-music-app/index.html",
+    "main.d6f2adaa.css.map": "/project-music-app/static/css/main.d6f2adaa.css.map",
+    "main.9da48ac8.js.map": "/project-music-app/static/js/main.9da48ac8.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d6f2adaa.css",
+    "static/js/main.9da48ac8.js"
+  ]
+}
