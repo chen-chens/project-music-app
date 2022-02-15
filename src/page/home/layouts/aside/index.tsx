@@ -21,7 +21,7 @@ export const Aside = (props: NavBarProps) => {
     const theme = useContext(ThemeContext);
 
     const handleLogOut = () => {
-        navigate("/project-music-app/logIn");
+        navigate("/logIn");
         dispatch(currentUserActions.logout);
         dispatch(currentPlayingActions.closePlayBar);
     }
@@ -42,7 +42,7 @@ export const Aside = (props: NavBarProps) => {
             break;
         
             default:
-                navigate(`/project-music-app/master/myPlayLists/${key}`);
+                navigate(`/master/myPlayLists/${key}`);
                 props.setShowMobileNav(!props.showMobileNav);
             break;
         }
