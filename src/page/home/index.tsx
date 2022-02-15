@@ -16,6 +16,7 @@ export default function Home(){
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation(); // To get url
+    console.log("🚀 ~ file: index.tsx ~ line 19 ~ Home ~ location", location)
     const urlParams = qs.parse(location.hash.slice(1), { ignoreQueryPrefix: true }); // pase url params to get token
     const showPlayBar = useSelector(currentPlayingData.showPlayBar);
     const expired = useSelector(currentUserData.expired);
