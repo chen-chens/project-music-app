@@ -4,7 +4,7 @@ import { currentPlayingActions, currentUserActions } from '../reduxToolkit';
 
 export function spotifyApi(){
     const spotifyWebApi = new SpotifyWebApi();
-
+    
     return spotifyWebApi;
 }
 

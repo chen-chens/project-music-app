@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layouts from "./layouts";
 import { MenuOutlined } from '@ant-design/icons';
 import { Button, Switch, Typography } from "antd";
 import { Outlet, useLocation, useNavigate } from "react-router";
-import qs from "qs";
 import { useDispatch, useSelector } from "react-redux";
 import { currentPlayingActions, currentPlayingData, currentUserActions, currentUserData } from "../../reduxToolkit";
 import PlayBar from "./playBar";
@@ -12,12 +11,9 @@ import { ThemeContext, themes } from "../../theme";
 
 
 export default function Home(){
-    const theme = useContext(ThemeContext);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation(); // To get url
-    console.log("🚀 ~ file: index.tsx ~ line 19 ~ Home ~ location", location)
-    const urlParams = qs.parse(location.hash.slice(1), { ignoreQueryPrefix: true }); // pase url params to get token
     const showPlayBar = useSelector(currentPlayingData.showPlayBar);
     const expired = useSelector(currentUserData.expired);
     const token = useSelector(currentUserData.token);
@@ -25,17 +21,12 @@ export default function Home(){
     const [ showMobileNav, setShowMobileNav ] = useState(false);
     const [ themeState, setThemeState ] = useState(themes.dark);
 
-    useEffect(()=> {
-        if(urlParams.access_token){
-            dispatch(currentUserActions.getToken(urlParams.access_token.toString())); // update token to redux
-            navigate("/master");
-        }else if(location.pathname === "/master" && token){
-            dispatch(currentUserActions.getToken(token));
-        }else{ // 重新整理，顯示 LoginModal
+    useEffect(()=> { // 重新整理，顯示 LoginModal
+        if(location.pathname === "/master" && !token){
             dispatch(currentUserActions.userExpired(true));
             dispatch(currentPlayingActions.closePlayBar());
         }
-    }, [urlParams.access_token])
+    }, [location.pathname])
 
     const handleLogOut = () => {
         navigate("/logIn");

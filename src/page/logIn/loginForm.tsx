@@ -1,43 +1,43 @@
 import {Form,Input,Button} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import AlertNotification from '../../components/alertNotifacation';
+import axios from 'axios';
+import {Buffer} from 'buffer';
+import { useDispatch } from 'react-redux';
+import { currentUserActions } from '../../reduxToolkit';
+import { useNavigate } from 'react-router';
 
 const LoginForm = () =>{
     const config = [{ required: true, message: '必填欄位' }];
-
-    function generateRandomString(length: number) {
-        var text = '';
-        var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-        for (var i = 0; i < length; i++) {
-            text += possible.charAt(Math.floor(Math.random() * possible.length));
-        }
-        return text;
-    };
-
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     // form 資料驗證成功
-    const onFinish = (values: {username: string, password: string}) => {
+    const onFinish = () => {
         const client_id = 'd2a09310d88449df94972cd08f3a96ec'; // Your client id
-        // const redirect_uri = 'http://localhost:3000/project-music-app/master'; // Your redirect uri
-        const redirect_uri = 'https://chen-chens.github.io/project-music-app/master'; // Your redirect uri
+        const client_secret = 'e09ce6492cad46bd8a8414d9bbd28e30'; // Your secret
 
-        const stateKey = 'spotify_auth_state';
-        const state = generateRandomString(16);
+        axios('https://accounts.spotify.com/api/token', {
+            method: 'POST',
+            headers : { 
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Basic ' + Buffer.from(`${client_id}:${client_secret}`).toString('base64')
+            },  
+            data: 'grant_type=client_credentials',
+        }).then(res => {
+            console.log("res: ", res.data.access_token);
+            dispatch(currentUserActions.getToken(res.data.access_token));
+            dispatch(currentUserActions.userExpired(false));
+            navigate("/master");
+        }).catch(err => {
+            console.log("clientCredentials err: ", err);
 
-        localStorage.setItem(stateKey, state); 
-        const scope = 'user-read-private user-read-email';
-
-        let url = 'https://accounts.spotify.com/authorize';
-        url += '?response_type=token';
-        url += '&client_id=' + encodeURIComponent(client_id);
-        url += '&scope=' + encodeURIComponent(scope);
-        url += '&redirect_uri=' + encodeURIComponent(redirect_uri);
-        url += '&state=' + encodeURIComponent(state);
-
-        window.location.href = url; // status code: 302 (重新導向，要求的資源暫時存於不同的 URI 底下，用戶端瀏覽器必須採取更多動作才能完成要求。)
-        
-    };
+            AlertNotification({
+                type: "error",
+                title: "無法連線 Spotify！"
+            })
+        })
+    }
      
     // form 資料驗證失敗
     const onFinishFailed = (errorInfo: any) => {
@@ -54,6 +54,7 @@ const LoginForm = () =>{
             name={"Music App Log In"}
             onFinishFailed={onFinishFailed}
             onFinish={onFinish}
+            initialValues={{username: "user", password: "password" }}
         >
             <Form.Item name="username" rules={config}>
                 <Input 
