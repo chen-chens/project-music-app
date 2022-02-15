@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/project-music-app/static/css/main.d6f2adaa.css",
-    "main.js": "/project-music-app/static/js/main.52edab3b.js",
+    "main.js": "/project-music-app/static/js/main.8a8293ce.js",
     "index.html": "/project-music-app/index.html",
     "main.d6f2adaa.css.map": "/project-music-app/static/css/main.d6f2adaa.css.map",
-    "main.52edab3b.js.map": "/project-music-app/static/js/main.52edab3b.js.map"
+    "main.8a8293ce.js.map": "/project-music-app/static/js/main.8a8293ce.js.map"
   },
   "entrypoints": [
     "static/css/main.d6f2adaa.css",
-    "static/js/main.52edab3b.js"
+    "static/js/main.8a8293ce.js"
   ]
 }
