@@ -10,7 +10,7 @@ import { store } from './reduxToolkit/store';
 ReactDOM.render(
     <React.StrictMode>
        <Provider store={store}>
-          <Router>
+          <Router basename="/project-music-app">
             <App />
           </Router>
        </Provider>
