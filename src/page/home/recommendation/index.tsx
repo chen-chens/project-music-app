@@ -1,52 +1,55 @@
 import { Card, Tabs, Typography} from "antd";
 import Meta from "antd/lib/card/Meta";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AlertNotification from "../../../components/alertNotifacation";
 import { Container } from "../../../components/container";
 import { ThemeContext } from "../../../theme";
 import { currentPlayingActions, currentUserData } from "../../../reduxToolkit";
 import { spotifyApi, checkStatusCode } from "../../../service";
-import { Genrees } from "../../../type/genrees";
+import { Genres } from "../../../type/genrees";
 import { DetailList } from "./detailList";
+import { useTranslation } from "react-i18next";
 
 
 export default function Recommendation(){
     const theme = useContext(ThemeContext);
     const dispatch = useDispatch();
     const token = useSelector(currentUserData.token);
+    const { t: globalT } = useTranslation('global');
+    const { t: genresT } = useTranslation('genres');
     const [ recommendationList, setRecommendationList ] = useState<SpotifyApi.TrackObjectFull[]>([]);
-    const [ genresKey, setGenresKey ] = useState<string>(Genrees.NEW_RELEASE);
+    const [ genresKey, setGenresKey ] = useState<string>(Genres.NEW_RELEASE);
     const [ loading, setLoading ] = useState(false);
 
     const categoryTags = [
         {
-            key: Genrees.NEW_RELEASE,
-            title: "最新發行",
+            key: Genres.NEW_RELEASE,
+            title: genresT("newRelease"),
         },
         {
-            key: Genrees.MOVIE,
-            title: "電影主題曲",
+            key: Genres.MOVIE,
+            title: genresT("movies"),
         },
         {
-            key: Genrees.RNB,
-            title: "R&B",
+            key: Genres.RNB,
+            title: genresT("rnb"),
         },
         {
-            key: Genrees.HIP_HOP,
-            title: "Hip Hop",
+            key: Genres.HIP_HOP,
+            title: genresT("hipHop"),
         },
         {
-            key: Genrees.ROCK,
-            title: "搖滾樂",
+            key: Genres.ROCK,
+            title: genresT("rock"),
         },
         {
-            key: Genrees.STUDY,
-            title: "專注",
+            key: Genres.STUDY,
+            title: genresT("study"),
         },
         {
-            key: Genrees.WORK_OUT,
-            title: "健身",
+            key: Genres.WORK_OUT,
+            title: genresT("workOut"),
         },
     ];
 
@@ -64,7 +67,7 @@ export default function Recommendation(){
 
                 AlertNotification({
                     type: "error",
-                    title: "取得資料失敗！"
+                    title: globalT("failToGetData")
                 })
             }).finally(() => setLoading(false))
         }
@@ -72,7 +75,7 @@ export default function Recommendation(){
     
     return(
         <Container theme={theme}>
-            <Typography.Title level={3}>今天想聽什麼歌？</Typography.Title>
+            <Typography.Title level={3}>{globalT('greeting')}</Typography.Title>
             <Tabs onChange={(key: string)=> setGenresKey(key)}>
                 {categoryTags.map(tag => (
                     <Tabs.TabPane tab={tag.title} key={tag.key}>

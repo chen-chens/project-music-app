@@ -1,13 +1,42 @@
 {    
     "global": {
-        "requiredField": "必填欄位"
+        "requiredField": "必填欄位",
+        "searchFail": "搜尋失敗！",
+        "failToGetData": "取得資料失敗！",
+        "pleaseTryAgain": "請重新輸入！",
+        "greeting": "今天想聽什麼歌？",
+        "create": "新增"
     },
     "logInPage": {
         "logIn": "登入",
+        "logOut": "登出",
         "logInByGoogle": "使用 Google 登入",
         "password": "密碼",
         "account": "帳號",
         "connectionFail": "無法連線 Spotify！",
         "requiredFields": "帳號密碼為必填項目"
+    },
+    "playLists": {
+        "myPlayList": "我的播放清單",
+        "song": "歌名",
+        "album": "專輯",
+        "releaseDate": "發行日期",
+        "buildMyPlayList": "建立播放清單",
+        "addToRecommendation": "加入推薦清單",
+        "searchForSongOrAlbum": "搜尋歌曲或專輯...",
+        "noData": "查無資料"
+    },
+    "genres": {
+        "newRelease": "最新發行",
+        "movies": "電影主題曲",
+        "rnb": "R&B",
+        "hipHop": "Hip Hop",
+        "rock": "搖滾樂",
+        "study": "專注",
+        "workOut": "健身"
+    },
+    "theme": {
+        "darkMode": "深色模式",
+        "lightMode": "淺色模式"
     }
 }

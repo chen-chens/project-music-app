@@ -16,7 +16,11 @@ export const TopHeader = styled.header`
         cursor: pointer;
     }
 
-    /* Mobile menu */
+    .languageTransfer{
+        position: fixed;
+        top: 13px;
+        right: 90px;
+    }
     .menuBtn{
         height: 60px;
         width: 60px;

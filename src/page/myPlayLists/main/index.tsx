@@ -5,6 +5,7 @@ import { icon_style } from "../../../theme";
 import { useDispatch } from "react-redux";
 import { currentPlayingActions } from "../../../reduxToolkit";
 import { UserDataType } from "../../../type/userDataType";
+import { useTranslation } from "react-i18next";
 
 interface MainProps{
     playListData?: UserDataType;
@@ -15,9 +16,11 @@ interface MainProps{
 export default function Main(props: MainProps) {
     const { playListData, getArtistNames, handleDeleteItemToPlayList } = props;
     const dispatch = useDispatch();
+    const { t } = useTranslation("playLists");
+
     const columns: ColumnsType<SpotifyApi.TrackObjectFull> = [
         {
-            title: '',
+            title: "",
             width: 40,
             onCell: () => ({style: {textAlign: "center"}}),
             render: (row: SpotifyApi.TrackObjectFull) => ( 
@@ -29,7 +32,7 @@ export default function Main(props: MainProps) {
             ),
         },
         {
-            title: '歌名',
+            title: t("song"),
             width: 300,
             render: (row: SpotifyApi.TrackObjectFull) => ( 
                 <List.Item.Meta
@@ -40,13 +43,13 @@ export default function Main(props: MainProps) {
             )
         },
         {
-            title: '專輯',
+            title: t("album"),
             width: 150,
             dataIndex: ['album', 'name'],
             responsive: ['md'],
         },
         {
-            title: '發行日期',
+            title: t("releaseDate"),
             width: 150,
             dataIndex: ['album', 'release_date'],
             responsive: ['lg'],

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import BasicLayout from "../../layouts/basicLayout";
 import { spotifyApi, checkStatusCode } from "../../service";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,15 +9,16 @@ import { UserDataType } from "../../type/userDataType";
 import SpotifyWebApi from "spotify-web-api-js";
 import Details from "./details";
 import Main from "./main";
+import { useTranslation } from "react-i18next";
 
 type OperationType = "create" | "delete";
 
 export default function MyPlayLists(){
-    const ref = React.useRef(null);
     const token = useSelector(currentUserData.token);
     const userPlayLists = useSelector(currentUserData.userPlayLists);
     const urlParams = useParams();
     const dispatch = useDispatch();
+    const { t } = useTranslation('global');
     const [ loading, setLoading ] = useState(false);
     const [ searchValue, setSearchValue ] = useState("");
     const [ searchResults, setSearchResults ] = useState<SpotifyApi.TrackObjectFull[]>([]);
@@ -43,8 +44,8 @@ export default function MyPlayLists(){
             checkStatusCode(err.status, dispatch);
             AlertNotification({
                 type: "error",
-                title: "搜尋失敗！",
-                description: "請重新輸入！"
+                title: t("searchFail"),
+                description: t("pleaseTryAgain")
             })
         }).finally(() => setLoading(false))
     }
@@ -67,13 +68,13 @@ export default function MyPlayLists(){
         return artistNames.join();
     }
 
-    const transferResults = (operation: OperationType, item: SpotifyApi.TrackObjectFull) => {
+    const transferResults = (operation: OperationType, target: SpotifyApi.TrackObjectFull) => {
         const tempResults = [...searchResults];
-        const targetIndex = searchResults.findIndex(item => item.id === item.id);
+        const targetIndex = searchResults.findIndex(item => item.id === target.id);
         if(operation === "create"){
             tempResults.splice(targetIndex, 1);
         }else if(operation === "delete"){
-            tempResults.push(item);
+            tempResults.push(target);
         }
         setSearchResults(tempResults);
     }
@@ -84,7 +85,7 @@ export default function MyPlayLists(){
             playList: (playListData?.playList) ? [...playListData.playList, item] : [item]
         };
         dispatch(currentUserActions.updateUserPlayList(updateCurrentPlayList));
-        transferResults( "create", item);
+        transferResults("create", item);
     }
 
     const handleDeleteItemToPlayList = (row: SpotifyApi.TrackObjectFull) => {

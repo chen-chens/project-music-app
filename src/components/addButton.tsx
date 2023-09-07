@@ -2,6 +2,7 @@ import { Button } from "antd";
 import { ButtonType } from "antd/lib/button";
 import { SizeType } from "antd/lib/config-provider/SizeContext";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 
 interface ButtonProps {
@@ -15,4 +16,10 @@ interface ButtonProps {
     size?: SizeType;
 }
 
-export const AddButton = (props: ButtonProps) => (<Button type="primary" {...props}>新增</Button>);
+export const AddButton = (props: ButtonProps) => {
+    const { t: globalT } = useTranslation("global");
+
+    return(
+        <Button type="primary" {...props}>{globalT("create")}</Button>
+    );
+}

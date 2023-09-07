@@ -2,6 +2,7 @@ import { Avatar, Input, List, Typography } from "antd";
 import React from "react";
 import VirtualList from 'rc-virtual-list';
 import { AddButton } from "../../../components/addButton";
+import { useTranslation } from "react-i18next";
 
 interface DetailsProps{
     loading: boolean;
@@ -29,6 +30,7 @@ export default function Details(props: DetailsProps) {
     } = props;
 
     const ContainerHeight = 400;
+    const { t } = useTranslation("playLists");
 
     const onScroll = (event: React.UIEvent<HTMLElement, UIEvent>) => {
         if ((event.currentTarget.scrollHeight - event.currentTarget.scrollTop) === ContainerHeight) {
@@ -38,9 +40,9 @@ export default function Details(props: DetailsProps) {
 
     return(
         <>
-            <Typography.Title level={4}>加入推薦清單</Typography.Title>
+            <Typography.Title level={4}>{t("addToRecommendation")}</Typography.Title>
             <Input.Search 
-                placeholder="搜尋歌曲或專輯..." 
+                placeholder={t("searchForSongOrAlbum")}
                 value={searchValue}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchValue(e.target.value)} 
                 onSearch={() => onSearch(searchValue)}
@@ -56,7 +58,6 @@ export default function Details(props: DetailsProps) {
                             itemHeight={47}
                             itemKey="id"
                             onScroll={onScroll}
-                            // ref={awesomeInputRef}
                         >
                             {item => (                                
                                 <List.Item 
@@ -73,7 +74,7 @@ export default function Details(props: DetailsProps) {
                         </VirtualList>
                     </List>)
                 :  
-                    <Typography.Title level={5}>查無資料</Typography.Title>
+                    <Typography.Title level={5}>{t("noData")}</Typography.Title>
             }
         </>
     )

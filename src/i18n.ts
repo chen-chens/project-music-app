@@ -18,6 +18,8 @@ i18n
     backend: {
         loadPath: '/locales/{{lng}}/{{ns}}.json', // 加载翻译文件的路径
     },
+    ns: ['en', 'zh'],
+    defaultNS: 'en'
 })
 
 export default i18n;

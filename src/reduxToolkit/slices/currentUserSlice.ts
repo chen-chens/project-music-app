@@ -9,7 +9,7 @@ interface CurrentUserType {
 }
 
 const initialState: CurrentUserType = {
-    userPlayLists: [{id: "1", name: "我的播放清單 #1", playList:[]}],
+    userPlayLists: [{id: "1", name: "My PlayList #1", playList:[]}],
     token: null,
     expired: false
 }

@@ -6,6 +6,7 @@ import { currentPlayingActions, currentUserActions, currentUserData } from "../.
 import { icon_style, ThemeContext } from "../../../../theme";
 import React, { useContext } from "react";
 import { SideBar } from "./sideBar";
+import { useTranslation } from "react-i18next";
 
 interface NavBarProps {
     showMobileNav: boolean;
@@ -19,6 +20,8 @@ export const Aside = (props: NavBarProps) => {
     const navigate = useNavigate();
     const userPlayLists = useSelector(currentUserData.userPlayLists);
     const theme = useContext(ThemeContext);
+    const { t: globalT } = useTranslation("global");
+    const { t } = useTranslation("playLists");
 
     const handleLogOut = () => {
         navigate("/logIn");
@@ -31,7 +34,7 @@ export const Aside = (props: NavBarProps) => {
             case BUILD_PLAYLIST:
                 const newPlayList = {
                     id: `${userPlayLists.length+1}`, 
-                    name: `我的播放清單 #${userPlayLists.length+1}`,
+                    name: `${t("myPlayList")} #${userPlayLists.length+1}`,
                     playList:[]
                 };
                 dispatch(currentUserActions.createUserPlayList(newPlayList));
@@ -53,7 +56,7 @@ export const Aside = (props: NavBarProps) => {
         <SideBar showMobileNav={props.showMobileNav} theme={theme}> 
             <Menu theme="dark" mode="inline" defaultValue={BUILD_PLAYLIST} onClick={(e) => handleMenuClick(e.key)}>
                 <Menu.Item key={BUILD_PLAYLIST} icon={<FolderAddOutlined style={icon_style}/>}>
-                    建立播放清單
+                    {t("buildMyPlayList")}
                 </Menu.Item>
                 {   userPlayLists.map(menu => (
                     <Menu.Item key={menu.id} icon={<UserOutlined style={icon_style}/>}>
@@ -61,7 +64,7 @@ export const Aside = (props: NavBarProps) => {
                     </Menu.Item>
                 ))}
                 <Menu.Item key={LOG_OUT} icon={<LogoutOutlined style={icon_style}/>}>
-                    登出
+                    {globalT("logOut")}
                 </Menu.Item>
             </Menu>        
         </SideBar>

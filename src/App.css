@@ -63,6 +63,23 @@ body{
 .anticon[tabindex]:hover{
     color: var(--active-color);
 }
+.ant-radio-button-wrapper:hover{
+    color: var(--primary-color);
+}
+.ant-radio-button-wrapper-checked:not([class*=' ant-radio-button-wrapper-disabled']).ant-radio-button-wrapper:first-child{
+    border-color: var(--primary-color);
+}
+.ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled),
+.ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover,
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):active::before {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #fff;
+}
+.ant-radio-button-wrapper{
+    background: var(--gray-800);
+    color: #fff;
+}
 
 /* LogBtn */
 .logBtn{

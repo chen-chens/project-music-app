@@ -1,14 +1,43 @@
 {
     "global": {
-        "requiredField": "Required Field"
+        "requiredField": "Required Field",
+        "searchFail": "Search Error!",
+        "failToGetData": "Fail to get Data!",
+        "pleaseTryAgain": "Please Try Again!",
+        "greeting": "What song are you in the mood for today?",
+        "create": "Add"
     },
     "logInPage": {
         "logIn": "Log In",
+        "logOut": "Log Out",
         "logInByGoogle": "Log In with Google",
         "password": "Password",
         "account": "Account",
         "connectionFail": "Can't get connection with Spotify！",
         "requiredFields": "Please complete the required fields!"
+    },
+    "playLists": {
+        "myPlayList": "My PlayList",
+        "song": "Song",
+        "album": "Album",
+        "releaseDate": "Release Date",
+        "buildMyPlayList": "Build My PlayList",
+        "addToRecommendation": "Add to Recommendation List",
+        "searchForSongOrAlbum": "Search For Song or Album...",
+        "noData": "There is no related data."
+    },
+    "genres": {
+        "newRelease": "New Release",
+        "movies": "Movies",
+        "rnb": "R&B",
+        "hipHop": "Hip Hop",
+        "rock": "Rock Music",
+        "study": "Study Music",
+        "workOut": "Work Out"
+    },
+    "theme": {
+        "darkMode": "Dark Mode",
+        "lightMode": "Light Mode"
     }
 }
   

@@ -1,4 +1,4 @@
-export enum Genrees {
+export enum Genres {
     NEW_RELEASE = "new-release", // 最新發行
     RNB = "r-n-b",
     MOVIE = "movies",
