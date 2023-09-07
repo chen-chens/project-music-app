@@ -1,0 +1,13 @@
+{    
+    "global": {
+        "requiredField": "必填欄位"
+    },
+    "logInPage": {
+        "logIn": "登入",
+        "logInByGoogle": "使用 Google 登入",
+        "password": "密碼",
+        "account": "帳號",
+        "connectionFail": "無法連線 Spotify！",
+        "requiredFields": "帳號密碼為必填項目"
+    }
+}

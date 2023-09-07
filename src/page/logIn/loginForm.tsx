@@ -1,16 +1,20 @@
 import {Form,Input,Button} from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { UserOutlined, LockOutlined, GoogleOutlined } from '@ant-design/icons';
 import AlertNotification from '../../components/alertNotifacation';
 import axios from 'axios';
 import {Buffer} from 'buffer';
 import { useDispatch } from 'react-redux';
 import { currentUserActions } from '../../reduxToolkit';
 import { useNavigate } from 'react-router';
+import { useTranslation } from 'react-i18next';
 
 const LoginForm = () =>{
-    const config = [{ required: true, message: '必填欄位' }];
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { t } = useTranslation('logInPage');
+    const { t: globalT } = useTranslation('global');
+    const config = [{ required: true, message: globalT('requiredField') }];
+
 
     // form 資料驗證成功
     const onFinish = () => {
@@ -34,24 +38,28 @@ const LoginForm = () =>{
 
             AlertNotification({
                 type: "error",
-                title: "無法連線 Spotify！"
+                title: t('connectionFail')
             })
         })
     }
      
     // form 資料驗證失敗
     const onFinishFailed = (errorInfo: any) => {
-        console.log("帳號密碼沒填", errorInfo);
+        console.log(errorInfo);
         
         AlertNotification({
             type :"error",
-            title: "帳號密碼為必填項目"
+            title: t('requiredFields')
         });
     };
+
+    const handleGoogleLogIn = () => {
+        console.log("Log In By Google!")
+    }
     
     return(
         <Form         
-            name={"Music App Log In"}
+            name={"Music App"}
             onFinishFailed={onFinishFailed}
             onFinish={onFinish}
             initialValues={{username: "user", password: "password" }}
@@ -59,7 +67,7 @@ const LoginForm = () =>{
             <Form.Item name="username" rules={config}>
                 <Input 
                     prefix={<UserOutlined />} 
-                    placeholder="帳號" 
+                    placeholder={t('account')}
                 />            
             </Form.Item>
 
@@ -67,15 +75,19 @@ const LoginForm = () =>{
                 <Input
                     prefix={<LockOutlined />}
                     type="password"
-                    placeholder="密碼"
+                    placeholder={t('password')}
                 />            
             </Form.Item>
 
             <Form.Item>
                 <Button type="primary" htmlType="submit" style={{ width:'100%'}}>
-                    登入
+                    {t('logIn')}
                 </Button>
             </Form.Item>
+
+            <Button style={{ width:'100%'}} icon={<GoogleOutlined />} onClick={handleGoogleLogIn}>
+                {t('logInByGoogle')}
+            </Button>
         </Form>
     )
 }

@@ -1,0 +1,14 @@
+{
+    "global": {
+        "requiredField": "Required Field"
+    },
+    "logInPage": {
+        "logIn": "Log In",
+        "logInByGoogle": "Log In with Google",
+        "password": "Password",
+        "account": "Account",
+        "connectionFail": "Can't get connection with Spotify！",
+        "requiredFields": "Please complete the required fields!"
+    }
+}
+  
